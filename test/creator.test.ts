@@ -1,4 +1,4 @@
-import { PIXQRCode } from '../dist'
+import { PIXQRCode } from '../src'
 
 it('should be able to create a static EMV code from data', () => {
   PIXQRCode.createCode({

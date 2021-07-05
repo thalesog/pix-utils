@@ -5,7 +5,7 @@ import { EMVQR } from './emv-merchant-qrcode/emv-qrcode-tags'
 import { QRCodeNode } from './emv-merchant-qrcode/qrcode-node'
 import { getRuleValidator, PIXQRCodeError, PIXQRErrorCode } from './pix-qrcode-validator'
 import { PIXQRCodeElements } from './types/PIXElements'
-
+import { toDataURL } from 'qrcode'
 export class PIX {
   static GUI = 'br.gov.bcb.pix'
   static TAG_MAI_CHAVE = 1
@@ -115,13 +115,29 @@ export class PIXQRCode {
     )
   }
 
+  static async getImage(brCode: string): Promise<string> {
+    const dataUrl = await toDataURL(brCode)
+    return dataUrl.toString()
+  }
+
+  static async getBase64Image(brCode: string): Promise<Buffer> {
+    const qrImage = await PIXQRCode.getImage(brCode)
+    const matches = qrImage.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/)
+
+    if (matches == null || matches.length !== 3) {
+      throw new PIXQRCodeError(PIXQRErrorCode.INVALID_QRCODE, 'Invalid input string')
+    }
+
+    return Buffer.from(matches[2], 'base64')
+  }
+
   async getPayloadData(): Promise<PIXFetchResults | false> {
     if (this.isPIX('dynamic')) {
       return await fetchPayload(this.getMAI()?.getElement(PIX.TAG_MAI_URL).content)
     }
     throw new PIXQRCodeError(
       PIXQRErrorCode.MISSING_MANDATORY_ELEMENT,
-      'You can only get payload data from dynamic '
+      'You can only get payload data from dynamic type of pix'
     )
   }
 }

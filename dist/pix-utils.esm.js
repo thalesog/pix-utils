@@ -1,5 +1,6 @@
 import { Buffer as Buffer$1 } from 'buffer';
 import axios from 'axios';
+import { toDataURL } from 'qrcode';
 
 var PayloadExample = {
   txid: 'fc9a4366-ff3d-4964-b5db-c6c91a8722d3',
@@ -2330,34 +2331,102 @@ var PIXQRCode = /*#__PURE__*/function () {
     throw new PIXQRCodeError(PIXQRErrorCode.INVALID_QRCODE, 'Unable to extract static/dynamic elements');
   };
 
-  _proto.getPayloadData = /*#__PURE__*/function () {
-    var _getPayloadData = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee2() {
-      var _this$getMAI4;
-
+  PIXQRCode.getImage = /*#__PURE__*/function () {
+    var _getImage = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee2(brCode) {
+      var dataUrl;
       return runtime_1.wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
-              if (!this.isPIX('dynamic')) {
-                _context2.next = 4;
-                break;
-              }
+              _context2.next = 2;
+              return toDataURL(brCode);
 
-              _context2.next = 3;
-              return fetchPayload((_this$getMAI4 = this.getMAI()) == null ? void 0 : _this$getMAI4.getElement(PIX.TAG_MAI_URL).content);
-
-            case 3:
-              return _context2.abrupt("return", _context2.sent);
+            case 2:
+              dataUrl = _context2.sent;
+              return _context2.abrupt("return", dataUrl.toString());
 
             case 4:
-              throw new PIXQRCodeError(PIXQRErrorCode.MISSING_MANDATORY_ELEMENT, 'You can only get payload data from dynamic ');
-
-            case 5:
             case "end":
               return _context2.stop();
           }
         }
-      }, _callee2, this);
+      }, _callee2);
+    }));
+
+    function getImage(_x2) {
+      return _getImage.apply(this, arguments);
+    }
+
+    return getImage;
+  }();
+
+  PIXQRCode.getBase64Image = /*#__PURE__*/function () {
+    var _getBase64Image = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee3(brCode) {
+      var qrImage, matches;
+      return runtime_1.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              _context3.next = 2;
+              return PIXQRCode.getImage(brCode);
+
+            case 2:
+              qrImage = _context3.sent;
+              matches = qrImage.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+
+              if (!(matches == null || matches.length !== 3)) {
+                _context3.next = 6;
+                break;
+              }
+
+              throw new PIXQRCodeError(PIXQRErrorCode.INVALID_QRCODE, 'Invalid input string');
+
+            case 6:
+              return _context3.abrupt("return", Buffer.from(matches[2], 'base64'));
+
+            case 7:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3);
+    }));
+
+    function getBase64Image(_x3) {
+      return _getBase64Image.apply(this, arguments);
+    }
+
+    return getBase64Image;
+  }();
+
+  _proto.getPayloadData = /*#__PURE__*/function () {
+    var _getPayloadData = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee4() {
+      var _this$getMAI4;
+
+      return runtime_1.wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              if (!this.isPIX('dynamic')) {
+                _context4.next = 4;
+                break;
+              }
+
+              _context4.next = 3;
+              return fetchPayload((_this$getMAI4 = this.getMAI()) == null ? void 0 : _this$getMAI4.getElement(PIX.TAG_MAI_URL).content);
+
+            case 3:
+              return _context4.abrupt("return", _context4.sent);
+
+            case 4:
+              throw new PIXQRCodeError(PIXQRErrorCode.MISSING_MANDATORY_ELEMENT, 'You can only get payload data from dynamic type of pix');
+
+            case 5:
+            case "end":
+              return _context4.stop();
+          }
+        }
+      }, _callee4, this);
     }));
 
     function getPayloadData() {

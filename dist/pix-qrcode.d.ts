@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import { PIXFetchResults } from './payload/fetchPayload';
 import { ValidationObserver, ValidationResult } from './utils/rule-validator';
 import { EMVMerchantQRCode, EMVMerchantQRParams } from './emv-merchant-qrcode/emv-merchant-qrcode';
@@ -18,5 +19,7 @@ export declare class PIXQRCode {
     validateCode(observer?: ValidationObserver): Promise<ValidationResult>;
     isPIX(test: 'pix' | 'valid' | 'static' | 'dynamic'): boolean;
     extractElements(): PIXQRCodeElements;
+    static getImage(brCode: string): Promise<string>;
+    static getBase64Image(brCode: string): Promise<Buffer>;
     getPayloadData(): Promise<PIXFetchResults | false>;
 }
