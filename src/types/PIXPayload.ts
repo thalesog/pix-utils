@@ -1,35 +1,77 @@
-export type PIXPayload = {
+export enum PixDynamicStatus {
+  ATIVA = 'ATIVA',
+  CONCLUIDA = 'CONCLUIDA',
+  REMOVIDA_PELO_USUARIO_RECEBEDOR = 'REMOVIDA_PELO_USUARIO_RECEBEDOR',
+  REMOVIDA_PELO_PSP = 'REMOVIDA_PELO_PSP',
+}
+
+type InfoAdicional = {
+  nome: string
+  valor: string
+}
+
+export type PIXFuturePayload = {
   revisao: number
   calendario: {
     criacao: string
     apresentacao: string
-    expiracao?: number
-    vencimento?: string
-    diasAposVencimento?: number
+    dataDeVencimento?: string
+    validadeAposVencimento?: number
   }
   devedor?: {
     cpf?: string
     cnpj?: string
     nome?: string
   }
+  recebedor?: {
+    cpf?: string
+    cnpj?: string
+    nome: string
+    logradouro: string
+    cidade: string
+    utf: string
+    cep: string
+  }
   valor: {
     original?: string
-    final?: string
-    juros?: string
     multa?: string
-    desconto?: string
+    juros?: string
     abatimento?: string
-    modalidadeAlteracao: number
+    desconto?: string
+    final: string
   }
   chave: string
   txid: string
   solicitacaoPagador?: string
-  infoAdicionais: {
-    nome: string
-    valor: string
-  }[]
-  status: string
+  infoAdicionais: InfoAdicional[]
+  status: PixDynamicStatus
 }
+
+export type PIXInstantPayload = {
+  revisao: number
+  calendario: {
+    criacao: string
+    apresentacao: string
+    expiracao: number
+  }
+  devedor?: {
+    cpf?: string
+    cnpj?: string
+    nome: string
+  }
+  valor: {
+    original: string
+    modalidadeAlteracao?: 0 | 1
+    // TODO: Missing retirada object
+  }
+  chave: string
+  txid: string
+  solicitacaoPagador?: string
+  infoAdicionais?: InfoAdicional[]
+  status: PixDynamicStatus
+}
+
+export type PIXPayload = PIXInstantPayload | PIXFuturePayload
 
 export const PayloadExample: PIXPayload = {
   txid: 'fc9a4366-ff3d-4964-b5db-c6c91a8722d3',
@@ -39,7 +81,7 @@ export const PayloadExample: PIXPayload = {
     apresentacao: '2020-04-01T18:00:00Z',
     expiracao: 3600,
   },
-  status: 'ATIVA',
+  status: PixDynamicStatus.ATIVA,
 
   valor: {
     original: '500.00',
