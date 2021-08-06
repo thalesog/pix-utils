@@ -10,6 +10,11 @@ type InfoAdicional = {
   valor: string
 }
 
+export type PIXPaylodParams = {
+  DPP?: string
+  codMun?: string
+}
+
 export type PIXFuturePayload = {
   revisao: number
   calendario: {

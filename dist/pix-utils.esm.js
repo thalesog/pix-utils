@@ -2,28 +2,6 @@ import { Buffer as Buffer$1 } from 'buffer';
 import axios from 'axios';
 import { toDataURL } from 'qrcode';
 
-var PayloadExample = {
-  txid: 'fc9a4366-ff3d-4964-b5db-c6c91a8722d3',
-  revisao: 3,
-  calendario: {
-    criacao: '2020-09-15T19:39:54.013Z',
-    apresentacao: '2020-04-01T18:00:00Z',
-    expiracao: 3600
-  },
-  status: 'ATIVA',
-  valor: {
-    original: '500.00',
-    "final": '500.00',
-    modalidadeAlteracao: 0
-  },
-  chave: '7407c9c8-f78b-11ea-adc1-0242ac120002',
-  solicitacaoPagador: 'Informar cartão fidelidade',
-  infoAdicionais: [{
-    nome: 'quantidade',
-    valor: '2'
-  }]
-};
-
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
   try {
     var info = gen[key](arg);
@@ -966,20 +944,25 @@ function fetchPayload(_x) {
 }
 
 function _fetchPayload() {
-  _fetchPayload = _asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee(url) {
-    var axiosOptions;
+  _fetchPayload = _asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee(_ref) {
+    var url, DPP, codMun, axiosOptions;
     return runtime_1.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
+            url = _ref.url, DPP = _ref.DPP, codMun = _ref.codMun;
             axiosOptions = {
               headers: {//accept: 'x/y',
                 //mode: 'no-cors',
+              },
+              params: {
+                DPP: DPP,
+                codMun: codMun
               }
             };
-            return _context.abrupt("return", axios.get('https://' + url, axiosOptions).then(function (_ref) {
-              var data = _ref.data,
-                  status = _ref.status;
+            return _context.abrupt("return", axios.get('https://' + url, axiosOptions).then(function (_ref2) {
+              var data = _ref2.data,
+                  status = _ref2.status;
               if (status !== 200) throw new Error('HTTP ' + status);
               return data;
             }).then(function (jws) {
@@ -1002,7 +985,7 @@ function _fetchPayload() {
               throw error;
             }));
 
-          case 2:
+          case 3:
           case "end":
             return _context.stop();
         }
@@ -2211,6 +2194,78 @@ function getRuleValidator$1() {
   return v;
 }
 
+function toBase64(_x) {
+  return _toBase.apply(this, arguments);
+}
+
+function _toBase() {
+  _toBase = _asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee(brCode) {
+    var dataUrl;
+    return runtime_1.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.prev = 0;
+            _context.next = 3;
+            return toDataURL(brCode);
+
+          case 3:
+            dataUrl = _context.sent;
+            return _context.abrupt("return", dataUrl.toString());
+
+          case 7:
+            _context.prev = 7;
+            _context.t0 = _context["catch"](0);
+            throw new PIXQRCodeError(PIXQRErrorCode.INVALID_QRCODE, 'Invalid input string');
+
+          case 10:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, null, [[0, 7]]);
+  }));
+  return _toBase.apply(this, arguments);
+}
+
+function toImage(_x2) {
+  return _toImage.apply(this, arguments);
+}
+
+function _toImage() {
+  _toImage = _asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee2(brCode) {
+    var base64, matches;
+    return runtime_1.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.next = 2;
+            return toBase64(brCode);
+
+          case 2:
+            base64 = _context2.sent;
+            matches = base64.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+
+            if (!(matches == null || matches.length !== 3)) {
+              _context2.next = 6;
+              break;
+            }
+
+            throw new PIXQRCodeError(PIXQRErrorCode.INVALID_QRCODE, 'Invalid input string');
+
+          case 6:
+            return _context2.abrupt("return", Buffer.from(matches[2], 'base64'));
+
+          case 7:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+  return _toImage.apply(this, arguments);
+}
+
 var PIX = function PIX() {};
 PIX.GUI = 'br.gov.bcb.pix';
 PIX.TAG_MAI_CHAVE = 1;
@@ -2333,19 +2388,13 @@ var PIXQRCode = /*#__PURE__*/function () {
 
   PIXQRCode.getImage = /*#__PURE__*/function () {
     var _getImage = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee2(brCode) {
-      var dataUrl;
       return runtime_1.wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
-              _context2.next = 2;
-              return toDataURL(brCode);
+              return _context2.abrupt("return", toBase64(brCode));
 
-            case 2:
-              dataUrl = _context2.sent;
-              return _context2.abrupt("return", dataUrl.toString());
-
-            case 4:
+            case 1:
             case "end":
               return _context2.stop();
           }
@@ -2362,29 +2411,13 @@ var PIXQRCode = /*#__PURE__*/function () {
 
   PIXQRCode.getBase64Image = /*#__PURE__*/function () {
     var _getBase64Image = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee3(brCode) {
-      var qrImage, matches;
       return runtime_1.wrap(function _callee3$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
-              _context3.next = 2;
-              return PIXQRCode.getImage(brCode);
+              return _context3.abrupt("return", toImage(brCode));
 
-            case 2:
-              qrImage = _context3.sent;
-              matches = qrImage.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
-
-              if (!(matches == null || matches.length !== 3)) {
-                _context3.next = 6;
-                break;
-              }
-
-              throw new PIXQRCodeError(PIXQRErrorCode.INVALID_QRCODE, 'Invalid input string');
-
-            case 6:
-              return _context3.abrupt("return", Buffer.from(matches[2], 'base64'));
-
-            case 7:
+            case 1:
             case "end":
               return _context3.stop();
           }
@@ -2400,28 +2433,26 @@ var PIXQRCode = /*#__PURE__*/function () {
   }();
 
   _proto.getPayloadData = /*#__PURE__*/function () {
-    var _getPayloadData = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee4() {
+    var _getPayloadData = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee4(params) {
       var _this$getMAI4;
 
       return runtime_1.wrap(function _callee4$(_context4) {
         while (1) {
           switch (_context4.prev = _context4.next) {
             case 0:
-              if (!this.isPIX('dynamic')) {
-                _context4.next = 4;
+              if (this.isPIX('dynamic')) {
+                _context4.next = 2;
                 break;
               }
 
-              _context4.next = 3;
-              return fetchPayload((_this$getMAI4 = this.getMAI()) == null ? void 0 : _this$getMAI4.getElement(PIX.TAG_MAI_URL).content);
+              throw new PIXQRCodeError(PIXQRErrorCode.INVALID_QRCODE, 'You can only get payload data from dynamic pix');
+
+            case 2:
+              return _context4.abrupt("return", fetchPayload(_extends({
+                url: (_this$getMAI4 = this.getMAI()) == null ? void 0 : _this$getMAI4.getElement(PIX.TAG_MAI_URL).content
+              }, params)));
 
             case 3:
-              return _context4.abrupt("return", _context4.sent);
-
-            case 4:
-              throw new PIXQRCodeError(PIXQRErrorCode.MISSING_MANDATORY_ELEMENT, 'You can only get payload data from dynamic type of pix');
-
-            case 5:
             case "end":
               return _context4.stop();
           }
@@ -2429,7 +2460,7 @@ var PIXQRCode = /*#__PURE__*/function () {
       }, _callee4, this);
     }));
 
-    function getPayloadData() {
+    function getPayloadData(_x4) {
       return _getPayloadData.apply(this, arguments);
     }
 
@@ -2439,5 +2470,37 @@ var PIXQRCode = /*#__PURE__*/function () {
   return PIXQRCode;
 }();
 
-export { PIX, PIXQRCode, PayloadExample };
+var PixDynamicStatus;
+
+(function (PixDynamicStatus) {
+  PixDynamicStatus["ATIVA"] = "ATIVA";
+  PixDynamicStatus["CONCLUIDA"] = "CONCLUIDA";
+  PixDynamicStatus["REMOVIDA_PELO_USUARIO_RECEBEDOR"] = "REMOVIDA_PELO_USUARIO_RECEBEDOR";
+  PixDynamicStatus["REMOVIDA_PELO_PSP"] = "REMOVIDA_PELO_PSP";
+})(PixDynamicStatus || (PixDynamicStatus = {}));
+
+var PayloadExample = {
+  txid: 'fc9a4366-ff3d-4964-b5db-c6c91a8722d3',
+  revisao: 3,
+  calendario: {
+    criacao: '2020-09-15T19:39:54.013Z',
+    apresentacao: '2020-04-01T18:00:00Z',
+    expiracao: 3600
+  },
+  status: PixDynamicStatus.ATIVA,
+  valor: {
+    original: '500.00',
+    "final": '500.00',
+    modalidadeAlteracao: 0
+  },
+  chave: '7407c9c8-f78b-11ea-adc1-0242ac120002',
+  solicitacaoPagador: 'Informar cartão fidelidade',
+  infoAdicionais: [{
+    nome: 'quantidade',
+    valor: '2'
+  }]
+};
+
+export default PIXQRCode;
+export { PIX, PIXQRCode, PayloadExample, PixDynamicStatus };
 //# sourceMappingURL=pix-utils.esm.js.map

@@ -13,11 +13,25 @@ export type PIXFetchResults = {
   payload: PIXPayload
 }
 
-export default async function fetchPayload(url: string): Promise<PIXFetchResults> {
+export type PIXFetchParams = {
+  url: string
+  DPP?: string
+  codMun?: string
+}
+
+export default async function fetchPayload({
+  url,
+  DPP,
+  codMun,
+}: PIXFetchParams): Promise<PIXFetchResults> {
   const axiosOptions: AxiosRequestConfig = {
     headers: {
       //accept: 'x/y',
       //mode: 'no-cors',
+    },
+    params: {
+      DPP,
+      codMun,
     },
   }
   return axios

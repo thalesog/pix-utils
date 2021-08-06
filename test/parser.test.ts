@@ -1,5 +1,4 @@
-import { PIXQRCode } from '../src'
-import { PIXStaticElements } from '../src/types/PIXElements'
+import PIXQRCode, { PIXStaticElements } from '../src'
 
 const brCode =
   '00020126510014br.gov.bcb.pix0115thalesog@me.com0210Pedido 123520400005303986540510.005802BR5914Thales Ogliari6002SC62070503***6304E5AB'

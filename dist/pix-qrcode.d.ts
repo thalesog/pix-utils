@@ -4,6 +4,7 @@ import { ValidationObserver, ValidationResult } from './utils/rule-validator';
 import { EMVMerchantQRCode, EMVMerchantQRParams } from './emv-merchant-qrcode/emv-merchant-qrcode';
 import { QRCodeNode } from './emv-merchant-qrcode/qrcode-node';
 import { PIXQRCodeElements } from './types/PIXElements';
+import { PIXPaylodParams } from '.';
 export declare class PIX {
     static GUI: string;
     static TAG_MAI_CHAVE: number;
@@ -21,5 +22,5 @@ export declare class PIXQRCode {
     extractElements(): PIXQRCodeElements;
     static getImage(brCode: string): Promise<string>;
     static getBase64Image(brCode: string): Promise<Buffer>;
-    getPayloadData(): Promise<PIXFetchResults | false>;
+    getPayloadData(params: PIXPaylodParams): Promise<PIXFetchResults | false>;
 }

@@ -9,4 +9,9 @@ export declare type PIXFetchResults = {
     header: any;
     payload: PIXPayload;
 };
-export default function fetchPayload(url: string): Promise<PIXFetchResults>;
+export declare type PIXFetchParams = {
+    url: string;
+    DPP?: string;
+    codMun?: string;
+};
+export default function fetchPayload({ url, DPP, codMun, }: PIXFetchParams): Promise<PIXFetchResults>;
