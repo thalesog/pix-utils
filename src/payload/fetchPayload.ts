@@ -25,10 +25,6 @@ export default async function fetchPayload({
   codMun,
 }: PIXFetchParams): Promise<PIXFetchResults> {
   const axiosOptions: AxiosRequestConfig = {
-    headers: {
-      //accept: 'x/y',
-      //mode: 'no-cors',
-    },
     params: {
       DPP,
       codMun,

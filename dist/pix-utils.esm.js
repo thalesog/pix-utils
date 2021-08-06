@@ -277,9 +277,9 @@ var runtime = (function (exports) {
   // This is a polyfill for %IteratorPrototype% for environments that
   // don't natively support it.
   var IteratorPrototype = {};
-  IteratorPrototype[iteratorSymbol] = function () {
+  define(IteratorPrototype, iteratorSymbol, function () {
     return this;
-  };
+  });
 
   var getProto = Object.getPrototypeOf;
   var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
@@ -293,8 +293,9 @@ var runtime = (function (exports) {
 
   var Gp = GeneratorFunctionPrototype.prototype =
     Generator.prototype = Object.create(IteratorPrototype);
-  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
-  GeneratorFunctionPrototype.constructor = GeneratorFunction;
+  GeneratorFunction.prototype = GeneratorFunctionPrototype;
+  define(Gp, "constructor", GeneratorFunctionPrototype);
+  define(GeneratorFunctionPrototype, "constructor", GeneratorFunction);
   GeneratorFunction.displayName = define(
     GeneratorFunctionPrototype,
     toStringTagSymbol,
@@ -408,9 +409,9 @@ var runtime = (function (exports) {
   }
 
   defineIteratorMethods(AsyncIterator.prototype);
-  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
+  define(AsyncIterator.prototype, asyncIteratorSymbol, function () {
     return this;
-  };
+  });
   exports.AsyncIterator = AsyncIterator;
 
   // Note that simple async functions are implemented on top of
@@ -603,13 +604,13 @@ var runtime = (function (exports) {
   // iterator prototype chain incorrectly implement this, causing the Generator
   // object to not be returned from this call. This ensures that doesn't happen.
   // See https://github.com/facebook/regenerator/issues/274 for more details.
-  Gp[iteratorSymbol] = function() {
+  define(Gp, iteratorSymbol, function() {
     return this;
-  };
+  });
 
-  Gp.toString = function() {
+  define(Gp, "toString", function() {
     return "[object Generator]";
-  };
+  });
 
   function pushTryEntry(locs) {
     var entry = { tryLoc: locs[0] };
@@ -928,14 +929,19 @@ try {
 } catch (accidentalStrictMode) {
   // This module should not be running in strict mode, so the above
   // assignment should always work unless something is misconfigured. Just
-  // in case runtime.js accidentally runs in strict mode, we can escape
+  // in case runtime.js accidentally runs in strict mode, in modern engines
+  // we can explicitly access globalThis. In older engines we can escape
   // strict mode using a global Function call. This could conceivably fail
   // if a Content Security Policy forbids using Function, but in that case
   // the proper solution is to fix the accidental strict mode problem. If
   // you've misconfigured your bundler to force strict mode and applied a
   // CSP to forbid Function, and you're not willing to fix either of those
   // problems, please detail your unique predicament in a GitHub issue.
-  Function("r", "regeneratorRuntime = r")(runtime);
+  if (typeof globalThis === "object") {
+    globalThis.regeneratorRuntime = runtime;
+  } else {
+    Function("r", "regeneratorRuntime = r")(runtime);
+  }
 }
 });
 
@@ -1198,10 +1204,12 @@ var rootSchemaMap = {
     length: {
       max: 13
     },
-    pattern: /^[\d]+(.\d\d)?$/
+    pattern: /^[\d]+(.\d\d)?$/ //    presence: 'C',
+
   },
   57: {
-    name: 'Value of Convenience Fee Percentage'
+    name: 'Value of Convenience Fee Percentage' //    presence: 'C',
+
   },
   58: {
     name: 'Country Code',
@@ -1317,8 +1325,9 @@ var ValidationError = /*#__PURE__*/function (_Error) {
     var _this;
 
     _this = _Error.call(this, message) || this;
-    _this.errorCode = errorCode;
+    _this.errorCode = void 0;
     _this.errorName = '';
+    _this.errorCode = errorCode;
     return _this;
   }
 
@@ -1326,6 +1335,8 @@ var ValidationError = /*#__PURE__*/function (_Error) {
 }( /*#__PURE__*/_wrapNativeSuper(Error));
 var RuleValidator = /*#__PURE__*/function () {
   function RuleValidator(ruleInfo) {
+    this.ruleInfo = void 0;
+    this.parent = void 0;
     this.childValidators = [];
     this.result = {
       status: 'none'
@@ -1582,6 +1593,7 @@ var QRCodeError = /*#__PURE__*/function (_ValidationError) {
     var _this;
 
     _this = _ValidationError.call(this, errorCode, message) || this;
+    _this.errorCode = void 0;
     _this.errorCode = errorCode;
     _this.errorName = 'EMVQR-' + QRErrorCode[errorCode];
     return _this;
@@ -1589,7 +1601,8 @@ var QRCodeError = /*#__PURE__*/function (_ValidationError) {
 
   return QRCodeError;
 }(ValidationError);
-var mandatoryElements = [EMVQR.TAG_INIT, EMVQR.TAG_MCC, EMVQR.TAG_TRANSACTION_CURRENCY, EMVQR.TAG_COUNTRY_CODE, EMVQR.TAG_MERCHANT_NAME, EMVQR.TAG_MERCHANT_CITY, EMVQR.TAG_CRC];
+var mandatoryElements = [EMVQR.TAG_INIT, EMVQR.TAG_MCC, EMVQR.TAG_TRANSACTION_CURRENCY, EMVQR.TAG_COUNTRY_CODE, EMVQR.TAG_MERCHANT_NAME, EMVQR.TAG_MERCHANT_CITY, EMVQR.TAG_CRC // CRC
+];
 
 function validateElement(val, schema, path) {
   //console.log( "Validating: " + path + `[${val}]` )
@@ -1702,11 +1715,26 @@ function getRuleValidator() {
 }
 
 var QRCodeNode = /*#__PURE__*/function () {
+  var _proto = QRCodeNode.prototype;
+
+  _proto.isType = function isType(type) {
+    return this.type === type;
+  };
+
+  _proto.isTemplate = function isTemplate() {
+    return this.isType('template') || this.isType('identified-template');
+  };
+
   function QRCodeNode(type, content, tag, baseOffset) {
     if (baseOffset === void 0) {
       baseOffset = 0;
     }
 
+    this.type = void 0;
+    this.content = void 0;
+    this.baseOffset = void 0;
+    this.elements = void 0;
+    this.tag = void 0;
     this.type = type;
     this.baseOffset = baseOffset;
     this.content = content;
@@ -1724,16 +1752,6 @@ var QRCodeNode = /*#__PURE__*/function () {
     if (!tag) return;
     this.tag = tag;
   }
-
-  var _proto = QRCodeNode.prototype;
-
-  _proto.isType = function isType(type) {
-    return this.type === type;
-  };
-
-  _proto.isTemplate = function isTemplate() {
-    return this.isType('template') || this.isType('identified-template');
-  };
 
   _proto.parseElementSequence = function parseElementSequence(sequence, baseOffset) {
     if (baseOffset === void 0) {
@@ -2118,6 +2136,7 @@ var PIXQRCodeError = /*#__PURE__*/function (_ValidationError) {
     var _this;
 
     _this = _ValidationError.call(this, errorCode, message) || this;
+    _this.errorCode = void 0;
     _this.errorCode = errorCode;
     _this.errorName = 'PIXQR-' + PIXQRErrorCode[errorCode];
     return _this;
@@ -2244,7 +2263,7 @@ function _toImage() {
 
           case 2:
             base64 = _context2.sent;
-            matches = base64.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+            matches = base64.match(/^data:([A-Za-z-+/]+);base64,(.+)$/);
 
             if (!(matches == null || matches.length !== 3)) {
               _context2.next = 6;
@@ -2273,6 +2292,7 @@ PIX.TAG_MAI_INFO_ADD = 2;
 PIX.TAG_MAI_URL = 25;
 var PIXQRCode = /*#__PURE__*/function () {
   function PIXQRCode(emvQRCode) {
+    this.emvQRCode = void 0;
     this.emvQRCode = emvQRCode;
   }
 

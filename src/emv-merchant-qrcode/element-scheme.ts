@@ -2,14 +2,12 @@ import { DataSchemaElement } from '../utils/data-schema-element'
 import { EMVQR } from '../emv-merchant-qrcode/emv-qrcode-tags'
 import { QRCodeNode } from '../emv-merchant-qrcode/qrcode-node'
 
+export type QRElementSchemaMap = Record<number, QRSchemaElement>
 export interface QRSchemaElement extends DataSchemaElement {
   lastTag?: number
   elementMap?: QRElementSchemaMap
   identifiedElementMap?: Record<string, QRElementSchemaMap>
 }
-
-export type QRElementSchemaMap = Record<number, QRSchemaElement>
-
 const paymentSystemSpecificTemplateMap = {
   0: {
     name: 'Globally Unique Identifier',

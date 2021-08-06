@@ -8,6 +8,6 @@ export interface QRSchemaElement extends DataSchemaElement {
 export declare type QRElementSchemaMap = Record<number, QRSchemaElement>;
 export declare const rootEMVSchema: {
     name: string;
-    elementMap: Record<number, QRSchemaElement>;
+    elementMap: QRElementSchemaMap;
 };
 export declare function lookupNodeSchema(schema: QRSchemaElement, node: QRCodeNode, tag: number): QRSchemaElement;

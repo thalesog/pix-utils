@@ -1,8 +1,8 @@
 import { EMVQR } from '../emv-merchant-qrcode/emv-qrcode-tags'
 import { QRCodeNode } from '../emv-merchant-qrcode/qrcode-node'
-import { getRuleValidator } from '../emv-merchant-qrcode/qrcode-validator'
+import { getRuleValidator, QRCodeError, QRErrorCode } from '../emv-merchant-qrcode/qrcode-validator'
 import { computeCRC } from '../emv-merchant-qrcode/crc'
-import { QRCodeError, QRErrorCode } from '../emv-merchant-qrcode/qrcode-validator'
+
 import { QRSchemaElement } from '../emv-merchant-qrcode/element-scheme'
 import { ValidationObserver, ValidationResult } from '../utils/rule-validator'
 import { EMVQRCodeBasicElements } from '../types/PIXElements'
@@ -96,12 +96,14 @@ export class EMVMerchantQRCode extends QRCodeNode {
 
     return root
   }
+
   getDataElement(tag: number): string {
     if (this.hasElement(tag)) {
       return this.getElement(tag).content
     }
     return ''
   }
+
   extractElements(): EMVQRCodeBasicElements {
     const basicElements: EMVQRCodeBasicElements = {
       merchantCategoryCode: this.getDataElement(EMVQR.TAG_MCC),
@@ -150,6 +152,7 @@ export class EMVMerchantQRCode extends QRCodeNode {
 
     return content
   }
+
   dumpNode(node: QRCodeNode = this, schema: QRSchemaElement, indent: string): string {
     let result = ''
 

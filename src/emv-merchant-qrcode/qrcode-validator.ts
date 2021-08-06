@@ -35,7 +35,7 @@ const mandatoryElements: number[] = [
 ]
 
 function validateElement(val: string | undefined, schema: QRSchemaElement, path: string) {
-  //console.log( "Validating: " + path + `[${val}]` )
+  // console.log( "Validating: " + path + `[${val}]` )
 
   // optional?
   if (!val) {
@@ -75,14 +75,14 @@ function validateElement(val: string | undefined, schema: QRSchemaElement, path:
   if (schema?.pattern) {
     const pattern = schema.pattern instanceof RegExp ? schema.pattern : new RegExp(schema.pattern)
 
-    //console.log( `pattern /${pattern.source}/ (${val}) => ${pattern.test(val)}`)
+    // console.log( `pattern /${pattern.source}/ (${val}) => ${pattern.test(val)}`)
     if (!pattern.test(val))
       throw new QRCodeError(QRErrorCode.INVALID_ELEMENT, `Element ${path} has invalid contents`)
   }
 }
 
 function validateNode(node: QRCodeNode, schema: QRSchemaElement, path = '') {
-  //console.log( "Validating: " + path + `=[${node.content}]:${node.type}` )
+  // console.log( "Validating: " + path + `=[${node.content}]:${node.type}` )
 
   if (node.isType('data')) {
     validateElement(node.content, schema, path)

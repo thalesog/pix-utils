@@ -15,6 +15,7 @@ export class QRCodeNode {
   isType(type: QRNodeType): boolean {
     return this.type === type
   }
+
   isTemplate(): boolean {
     return this.isType('template') || this.isType('identified-template')
   }
