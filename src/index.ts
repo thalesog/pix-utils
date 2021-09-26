@@ -1,2 +1,1 @@
-export * from './lib/async';
-export * from './lib/number';
+export default './lib-rewrite/main';
