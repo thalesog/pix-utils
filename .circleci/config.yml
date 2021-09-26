@@ -20,6 +20,8 @@ jobs:
       - run: npm test
       - run: npm run cov:send
       - run: npm run cov:check
+      - store_test_results:
+          path: /tmp/test-reports
   'node-14':
     docker:
       - image: circleci/node:14
@@ -37,6 +39,8 @@ jobs:
       - run: npm test
       - run: npm run cov:send
       - run: npm run cov:check
+      - store_test_results:
+          path: /tmp/test-reports
   'node-latest':
     docker:
       - image: circleci/node:latest
@@ -54,6 +58,8 @@ jobs:
       - run: npm test
       - run: npm run cov:send
       - run: npm run cov:check
+      - store_test_results:
+          path: /tmp/test-reports
 
 workflows:
   version: 2
