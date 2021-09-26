@@ -1,3 +1,5 @@
+import { PixFnDefault } from './pixFunctions';
+
 export type PixEmvMandatoryElements = {
   readonly merchantCategoryCode: string; // EL52
   readonly transactionCurrency: string; // EL53
@@ -11,23 +13,30 @@ export type PixEmvBasicElements = PixEmvMandatoryElements & {
   readonly transactionAmount?: number; // EL54
 };
 
+export enum PixElementType {
+  DYNAMIC = 'DYNAMIC',
+  STATIC = 'STATIC',
+  INVALID = 'INVALID',
+}
+
 export type DynamicPixEmvElements = PixEmvBasicElements & {
-  readonly type: 'dynamic';
+  readonly type: PixElementType.DYNAMIC;
   readonly url: string;
 };
 
 export type StaticPixEmvElements = PixEmvBasicElements & {
-  readonly type: 'static';
+  readonly type: PixElementType.STATIC;
   readonly pixKey: string;
   readonly txid?: string;
   readonly infoAdicional?: string;
 };
 
 export type InvalidPixElements = {
-  readonly type: 'invalid';
+  readonly type: PixElementType.INVALID;
+  readonly details: string;
 };
 
-export type PixEmvElements =
-  | InvalidPixElements
-  | StaticPixEmvElements
-  | DynamicPixEmvElements;
+export type ValidPixElements = StaticPixEmvElements | DynamicPixEmvElements;
+
+export type PixEmvElements = ValidPixElements | InvalidPixElements;
+export type PixObject = (ValidPixElements & PixFnDefault) | InvalidPixElements;
