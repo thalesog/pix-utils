@@ -1,11 +1,11 @@
 import {
   DynamicPixEmvElements,
-  InvalidPixElements,
+  PixElements,
   PixElementType,
-  PixEmvElements,
   StaticPixEmvElements,
 } from './types/pixElements';
 import { EmvMaiSchema, EmvSchema, ValidTags } from './types/pixEmvSchema';
+import { PixError } from './types/pixError';
 
 export function isPix(
   emvElements: ValidTags,
@@ -36,20 +36,20 @@ export function isPix(
   }
 }
 
-export function isInvalid(
-  pixElement: PixEmvElements
-): pixElement is InvalidPixElements {
-  return pixElement && pixElement.type === PixElementType.INVALID;
+export function hasError(
+  pixElement: PixElements | PixError
+): pixElement is PixError {
+  return pixElement && (pixElement as PixError).error;
 }
 
 export function isStaticPix(
-  pixElement: PixEmvElements
+  pixElement: PixElements
 ): pixElement is StaticPixEmvElements {
   return pixElement && pixElement.type === PixElementType.STATIC;
 }
 
 export function isDynamicPix(
-  pixElement: PixEmvElements
+  pixElement: PixElements
 ): pixElement is DynamicPixEmvElements {
   return pixElement && pixElement.type === PixElementType.DYNAMIC;
 }

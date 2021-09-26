@@ -1,10 +1,11 @@
 import { computeCRC } from './crc';
-import { PixElementType, ValidPixElements } from './types/pixElements';
+import { PixElements, PixElementType } from './types/pixElements';
 import {
   EmvAdditionalDataSchema,
   EmvMaiSchema,
   EmvSchema,
 } from './types/pixEmvSchema';
+import { ParsedTags, TagsWithSubTags } from './types/pixEmvSchema';
 import zeroPad from './utils/zeroPad';
 
 function generateEmvElement(elementId: number, value: string) {
@@ -14,7 +15,7 @@ function generateEmvElement(elementId: number, value: string) {
   return `${parsedElementId}${parsedLength}${value}`;
 }
 
-function generateMAI(elements: ValidPixElements) {
+function generateMAI(elements: PixElements): string {
   if (elements.type === PixElementType.STATIC) {
     return [
       generateEmvElement(EmvMaiSchema.TAG_MAI_GUI, EmvMaiSchema.BC_GUI),
@@ -34,7 +35,7 @@ function generateAdditionalData(txid: string) {
   return generateEmvElement(EmvAdditionalDataSchema.TAG_TXID, txid || '***');
 }
 
-export function assembleEmvCode(elements: ValidPixElements) {
+export function createEmv(elements: PixElements): string {
   if (elements.type === PixElementType.STATIC) {
     const generatedEmv = [
       generateEmvElement(EmvSchema.TAG_INIT, '01'),
@@ -83,4 +84,49 @@ export function assembleEmvCode(elements: ValidPixElements) {
     return generatedEmv.replace(/\w{4}$/, computeCRC(generatedEmv));
   }
   return 'INVALID';
+}
+
+export function parseEmv({
+  emvCode,
+  currentIndex = 0,
+  currentData = {},
+}): ParsedTags {
+  const tag = +emvCode.substring(currentIndex, currentIndex + 2);
+  const length = Number(emvCode.substring(currentIndex + 2, currentIndex + 4));
+  const value = emvCode.substring(currentIndex + 4, currentIndex + 4 + length);
+
+  if (!length || !value.length || length !== value.length) {
+    return {
+      isValid: false,
+      rawTags: currentData,
+    };
+  }
+
+  const newData = {
+    ...currentData,
+    [tag]: {
+      tag: tag,
+      length: length,
+      value: value,
+      ...(Object.values(TagsWithSubTags).includes(tag)
+        ? { subTags: parseEmv({ emvCode: value }) }
+        : {}),
+    },
+  };
+
+  if (currentIndex + 4 + length === emvCode.length) {
+    return {
+      isValid: true,
+      rawTags: newData,
+      getTag: (tag: string | number) => newData?.[Number(tag)]?.value,
+      getSubTag: (tag: string | number, mainTag: string | number) =>
+        newData?.[Number(mainTag)]?.subTags?.getTag(Number(tag)),
+    };
+  } else {
+    return parseEmv({
+      emvCode,
+      currentIndex: currentIndex + 4 + length,
+      currentData: newData,
+    });
+  }
 }

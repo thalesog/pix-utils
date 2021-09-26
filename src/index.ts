@@ -1,1 +1,2 @@
-export default './main';
+export { createDynamicPix, createStaticPix } from './create';
+export { parsePix } from './parser';

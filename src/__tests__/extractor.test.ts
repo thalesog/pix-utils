@@ -1,4 +1,4 @@
-import { parsePix } from '../main';
+import { parsePix } from '..';
 import {
   DynamicPixEmvElements,
   PixElementType,

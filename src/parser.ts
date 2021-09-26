@@ -1,9 +1,9 @@
 import { generatePixObject } from './assembler';
 import { computeCRC } from './crc';
-import { parseEmv } from './parse';
+import { parseEmv } from './emvHandler';
 import {
+  PixElements,
   PixElementType,
-  PixEmvElements,
   PixEmvMandatoryElements,
   PixObject,
 } from './types/pixElements';
@@ -13,27 +13,22 @@ import {
   EmvSchema,
   ValidTags,
 } from './types/pixEmvSchema';
-import { isInvalid, isPix } from './validate';
+import { PixError } from './types/pixError';
+import { hasError, isPix } from './validate';
 
-export function newPix(params: PixEmvElements) {
-  return params;
-}
-
-export function parsePix(brCode: string): PixObject {
+export function parsePix(brCode: string): PixObject | PixError {
   // Parse EMV Code
   const emvElements = parseEmv({ emvCode: brCode });
-  if (!emvElements.isValid)
-    return { type: PixElementType.INVALID, details: 'invalid emv code' };
+  if (!emvElements.isValid) return { error: true, message: 'invalid emv code' };
 
   // Validate CRC16
   const crc = computeCRC(brCode);
   if (crc !== emvElements.getTag(EmvSchema.TAG_CRC))
-    return { type: PixElementType.INVALID, details: 'invalid crc' };
+    return { error: true, message: 'invalid crc' };
 
   // Extract Elements
   const elements = extractElements(emvElements);
-  if (isInvalid(elements))
-    return { type: PixElementType.INVALID, details: 'invalid pix' };
+  if (hasError(elements)) return { error: true, message: 'invalid emv code' };
 
   return generatePixObject(elements);
 }
@@ -50,7 +45,9 @@ export function extractMandatoryElements(
   };
 }
 
-export function extractElements(emvElements: ValidTags): PixEmvElements {
+export function extractElements(
+  emvElements: ValidTags
+): PixElements | PixError {
   const basicElements = extractMandatoryElements(emvElements);
 
   if (isPix(emvElements, 'static')) {
@@ -80,7 +77,7 @@ export function extractElements(emvElements: ValidTags): PixEmvElements {
       url: emvElements.getSubTag(EmvMaiSchema.TAG_MAI_URL, EmvSchema.TAG_MAI),
     };
   }
-  return { type: PixElementType.INVALID, details: '' };
+  return { error: true, message: 'invalid pix' };
 }
 
 export function fetchPayload() {

@@ -1,4 +1,4 @@
-import { parseEmv } from '../parse';
+import { parseEmv } from '../emvHandler';
 import {
   EmvMaiSchema,
   EmvMandatory,

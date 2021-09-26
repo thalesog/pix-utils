@@ -6,9 +6,9 @@
   - [x] Static
   - [x] Dynamic
 - [x] Parse and validate EMV Codes
-- [ ] Export generated/parsed payment to Image
+- [x] Export generated/parsed payment to Image
 - [x] Export generated/parsed payment to EMV Code
-- [ ] Fetch, parse and validate remote payloads from dynamic payments
+- [x] Fetch, parse and validate remote payloads from dynamic payments
 - [ ] Improve tests
 - [ ] Doccumentation with all methods, parameters and some examples
 - [ ] Beautiful README with shields and stuff

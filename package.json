@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "@bitauth/libauth": "^1.17.1",
-    "axios": "^0.21.1",
+    "axios": "^0.21.4",
     "crc": "^3.8.0",
     "node-crc16": "^2.0.7",
     "qrcode": "^1.4.4"
@@ -52,6 +52,7 @@
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@types/jest": "^27.0.2",
     "@types/node": "^16.7.2",
+    "@types/qrcode": "^1.4.1",
     "@typescript-eslint/eslint-plugin": "^4.31.2",
     "@typescript-eslint/parser": "^4.31.2",
     "codecov": "^3.5.0",

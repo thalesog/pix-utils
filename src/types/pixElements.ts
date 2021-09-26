@@ -1,4 +1,4 @@
-import { PixFnDefault } from './pixFunctions';
+import { PixDynamicFn, PixStaticFn } from './pixFunctions';
 
 export type PixEmvMandatoryElements = {
   readonly merchantCategoryCode: string; // EL52
@@ -36,8 +36,10 @@ export type InvalidPixElements = {
   readonly details: string;
 };
 
-export type ValidPixElements = StaticPixEmvElements | DynamicPixEmvElements;
+export type PixElements = StaticPixEmvElements | DynamicPixEmvElements;
 
-export type PixEmvElements = ValidPixElements | InvalidPixElements;
-export type PixValidObject = ValidPixElements & PixFnDefault;
-export type PixObject = PixValidObject | InvalidPixElements;
+export type PixStaticObject = StaticPixEmvElements & PixStaticFn;
+
+export type PixDynamicObject = DynamicPixEmvElements & PixDynamicFn;
+
+export type PixObject = PixStaticObject | PixDynamicObject;

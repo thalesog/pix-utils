@@ -1,5 +1,9 @@
 import { generatePixObject } from './assembler';
-import { PixElementType, ValidPixElements } from './types/pixElements';
+import {
+  DynamicPixEmvElements,
+  PixElementType,
+  StaticPixEmvElements,
+} from './types/pixElements';
 
 type CreateStaticPixParams = {
   readonly merchantName: string;
@@ -38,7 +42,7 @@ export function createStaticPix(params: CreateStaticPixParams) {
     type: PixElementType.STATIC,
     ...defaultStaticFields,
     ...params,
-  } as ValidPixElements;
+  } as StaticPixEmvElements;
 
   return generatePixObject(elements);
 }
@@ -48,7 +52,7 @@ export function createDynamicPix(params: CreateDynamicPixParams) {
     type: PixElementType.DYNAMIC,
     ...defaultStaticFields,
     ...params,
-  } as ValidPixElements;
+  } as DynamicPixEmvElements;
 
   return generatePixObject(elements);
 }
