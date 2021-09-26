@@ -7,7 +7,7 @@ import {
 } from './types/pixElements';
 import { EmvMaiSchema, EmvSchema, ValidTags } from './types/pixEmvSchema';
 
-export function isPIX(
+export function isPix(
   emvElements: ValidTags,
   test: 'pix' | 'valid' | 'static' | 'dynamic'
 ): boolean {

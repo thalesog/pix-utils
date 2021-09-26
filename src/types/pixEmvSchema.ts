@@ -1,7 +1,6 @@
 export enum EmvSchema {
   TAG_INIT = 0,
-  TAG_ONETIME = 2,
-  TAG_AD_REF_LABEL = 5,
+  TAG_ONETIME = 1,
   TAG_MAI = 26,
   TAG_MCC = 52,
   TAG_TRANSACTION_CURRENCY = 53,
@@ -11,7 +10,10 @@ export enum EmvSchema {
   TAG_MERCHANT_CITY = 60,
   TAG_ADDITIONAL_DATA = 62,
   TAG_CRC = 63,
-  TAG_MAX = 99,
+}
+
+export enum EmvAdditionalDataSchema {
+  TAG_TXID = 5,
 }
 
 export enum EmvMaiSchema {
@@ -19,6 +21,7 @@ export enum EmvMaiSchema {
   TAG_MAI_PIXKEY = 1,
   TAG_MAI_INFO_ADD = 2,
   TAG_MAI_URL = 25,
+  BC_GUI = 'br.gov.bcb.pix',
 }
 
 export enum EmvMandatory {
@@ -29,10 +32,6 @@ export enum EmvMandatory {
   TAG_MERCHANT_CITY = EmvSchema.TAG_MERCHANT_CITY, //EL60
 }
 
-export enum MaiEmvSchema {
-  BC_GUI = 'br.gov.bcb.pix',
-}
-
 export enum TagsWithSubTags {
   TAG_MAI = EmvSchema.TAG_MAI,
   TAG_ADDITIONAL_DATA = EmvSchema.TAG_ADDITIONAL_DATA,
@@ -41,13 +40,13 @@ export type ValidTags = {
   readonly isValid: true;
   readonly [key: number]: {
     readonly tag: number;
-    readonly lenght: number;
+    readonly length: number;
     readonly value: string;
   };
   readonly rawTags: {
     readonly [key: number]: {
       readonly tag: number;
-      readonly lenght: number;
+      readonly length: number;
       readonly value: string;
     };
   };
@@ -60,7 +59,7 @@ export type InvalidTags = {
   readonly rawTags: {
     readonly [key: number]: {
       readonly tag: number;
-      readonly lenght: number;
+      readonly length: number;
       readonly value: string;
     };
   };

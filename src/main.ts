@@ -1,3 +1,4 @@
+import { generatePixObject } from './assembler';
 import { computeCRC } from './crc';
 import { parseEmv } from './parse';
 import {
@@ -6,8 +7,13 @@ import {
   PixEmvMandatoryElements,
   PixObject,
 } from './types/pixElements';
-import { EmvMaiSchema, EmvSchema, ValidTags } from './types/pixEmvSchema';
-import { isDynamicPix, isInvalid, isPIX, isStaticPix } from './validate';
+import {
+  EmvAdditionalDataSchema,
+  EmvMaiSchema,
+  EmvSchema,
+  ValidTags,
+} from './types/pixEmvSchema';
+import { isInvalid, isPix } from './validate';
 
 export function newPix(params: PixEmvElements) {
   return params;
@@ -29,21 +35,7 @@ export function parsePix(brCode: string): PixObject {
   if (isInvalid(elements))
     return { type: PixElementType.INVALID, details: 'invalid pix' };
 
-  // CHECK IF STATIC/DYNAMIC
-
-  // MAKE RETURN OBJECT
-
-  return {
-    ...elements,
-    isStatic: () => isStaticPix(elements),
-    isDynamic: () => isDynamicPix(elements),
-    toImage: () => {
-      return 'Not implemented';
-    },
-    toEmvCode: () => {
-      return 'Not implemented';
-    },
-  };
+  return generatePixObject(elements);
 }
 
 export function extractMandatoryElements(
@@ -61,7 +53,7 @@ export function extractMandatoryElements(
 export function extractElements(emvElements: ValidTags): PixEmvElements {
   const basicElements = extractMandatoryElements(emvElements);
 
-  if (isPIX(emvElements, 'static')) {
+  if (isPix(emvElements, 'static')) {
     return {
       type: PixElementType.STATIC,
       ...basicElements,
@@ -69,16 +61,19 @@ export function extractElements(emvElements: ValidTags): PixEmvElements {
         EmvMaiSchema.TAG_MAI_PIXKEY,
         EmvSchema.TAG_MAI
       ),
+      transactionAmount: Number(
+        emvElements.getTag(EmvSchema.TAG_TRANSACTION_AMOUNT)
+      ),
       infoAdicional: emvElements.getSubTag(
         EmvMaiSchema.TAG_MAI_INFO_ADD,
         EmvSchema.TAG_MAI
       ),
       txid: emvElements.getSubTag(
-        EmvSchema.TAG_AD_REF_LABEL,
+        EmvAdditionalDataSchema.TAG_TXID,
         EmvSchema.TAG_ADDITIONAL_DATA
       ),
     };
-  } else if (isPIX(emvElements, 'dynamic')) {
+  } else if (isPix(emvElements, 'dynamic')) {
     return {
       type: PixElementType.DYNAMIC,
       ...basicElements,

@@ -1,1 +1,1 @@
-export default './lib-rewrite/main';
+export default './main';

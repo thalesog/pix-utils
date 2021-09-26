@@ -1,9 +1,9 @@
-import { parsePix } from '../lib-rewrite/main';
+import { parsePix } from '../main';
 import {
   DynamicPixEmvElements,
   PixElementType,
   StaticPixEmvElements,
-} from '../lib-rewrite/types/pixElements';
+} from '../types/pixElements';
 
 import { DYNAMIC_TEST_EMV, STATIC_TEST_EMV } from './parser.test';
 

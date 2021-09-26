@@ -1,13 +1,16 @@
-import { parseEmv } from '../lib-rewrite/parse';
+import { parseEmv } from '../parse';
 import {
   EmvMaiSchema,
   EmvMandatory,
   EmvSchema,
   ValidTags,
-} from '../lib-rewrite/types/pixEmvSchema';
+} from '../types/pixEmvSchema';
 
 export const STATIC_TEST_EMV =
   '00020126510014br.gov.bcb.pix0115thalesog@me.com0210Pedido 123520400005303986540510.005802BR5914Thales Ogliari6002SC62070503***6304E5AB';
+
+export const STATIC_TEST_EMV_NUBANK =
+  '00020126580014BR.GOV.BCB.PIX0119nubank@thalesog.com0213PIX de Testes52040000530398654041.005802BR5914Thales Ogliari6009SAO PAULO61080540900062070503***6304581E';
 
 export const DYNAMIC_TEST_EMV =
   '00020126940014br.gov.bcb.pix2572qr-h.sandbox.pix.bcb.gov.br/rest/api/v2/cfe8166acaff4a62a18b7b766ef57c705204000053039865802BR5903Pix6008BRASILIA62070503***6304C7D7';

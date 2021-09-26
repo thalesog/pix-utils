@@ -2,12 +2,12 @@
 
 ## Here is the roadmap to Pix Utils v2.0.0 - Reborn
 
-- [ ] Generate payments based on parameters
-  - [ ] Static
-  - [ ] Dynamic
-- [ ] Parse and validate EMV Codes
+- [x] Generate payments based on parameters
+  - [x] Static
+  - [x] Dynamic
+- [x] Parse and validate EMV Codes
 - [ ] Export generated/parsed payment to Image
-- [ ] Export generated/parsed payment to EMV Code
+- [x] Export generated/parsed payment to EMV Code
 - [ ] Fetch, parse and validate remote payloads from dynamic payments
 
 ---

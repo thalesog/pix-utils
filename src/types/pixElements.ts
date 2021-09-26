@@ -10,7 +10,6 @@ export type PixEmvMandatoryElements = {
 
 export type PixEmvBasicElements = PixEmvMandatoryElements & {
   readonly oneTime?: boolean; // EL02
-  readonly transactionAmount?: number; // EL54
 };
 
 export enum PixElementType {
@@ -26,6 +25,7 @@ export type DynamicPixEmvElements = PixEmvBasicElements & {
 
 export type StaticPixEmvElements = PixEmvBasicElements & {
   readonly type: PixElementType.STATIC;
+  readonly transactionAmount?: number; // EL54
   readonly pixKey: string;
   readonly txid?: string;
   readonly infoAdicional?: string;
@@ -39,4 +39,5 @@ export type InvalidPixElements = {
 export type ValidPixElements = StaticPixEmvElements | DynamicPixEmvElements;
 
 export type PixEmvElements = ValidPixElements | InvalidPixElements;
-export type PixObject = (ValidPixElements & PixFnDefault) | InvalidPixElements;
+export type PixValidObject = ValidPixElements & PixFnDefault;
+export type PixObject = PixValidObject | InvalidPixElements;

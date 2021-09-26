@@ -1,4 +1,4 @@
-import { computeCRC } from '../lib-rewrite/crc';
+import { computeCRC } from '../crc';
 
 import { DYNAMIC_TEST_EMV, STATIC_TEST_EMV } from './parser.test';
 
