@@ -4,11 +4,11 @@ workflows:
   main:
     jobs:
       - tests:
-          version: 12
+          version: '12'
       - tests:
-          version: 14
+          version: '14'
       - tests:
-          version: latest
+          version: 'latest'
       - lint
       - integration
 
