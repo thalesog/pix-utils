@@ -1,24 +1,33 @@
 import { computeCRC } from './crc';
 import { parseEmv } from './parse';
-import { PixEmvElements, PixEmvMandatoryElements } from './types/pixElements';
+import {
+  PixElementType,
+  PixEmvElements,
+  PixEmvMandatoryElements,
+  PixObject,
+} from './types/pixElements';
 import { EmvMaiSchema, EmvSchema, ValidTags } from './types/pixEmvSchema';
-import { isDynamicPix, isPIX, isStaticPix } from './validate';
+import { isDynamicPix, isInvalid, isPIX, isStaticPix } from './validate';
 
 export function newPix(params: PixEmvElements) {
   return params;
 }
 
-export function parsePix(brCode: string) {
+export function parsePix(brCode: string): PixObject {
+  // Parse EMV Code
   const emvElements = parseEmv({ emvCode: brCode });
+  if (!emvElements.isValid)
+    return { type: PixElementType.INVALID, details: 'invalid emv code' };
 
-  if (!emvElements.isValid) return false;
-
+  // Validate CRC16
   const crc = computeCRC(brCode);
-
   if (crc !== emvElements.getTag(EmvSchema.TAG_CRC))
-    return { error: true, details: 'invalid crc' };
+    return { type: PixElementType.INVALID, details: 'invalid crc' };
 
+  // Extract Elements
   const elements = extractElements(emvElements);
+  if (isInvalid(elements))
+    return { type: PixElementType.INVALID, details: 'invalid pix' };
 
   // CHECK IF STATIC/DYNAMIC
 
@@ -29,6 +38,9 @@ export function parsePix(brCode: string) {
     isStatic: () => isStaticPix(elements),
     isDynamic: () => isDynamicPix(elements),
     toImage: () => {
+      return 'Not implemented';
+    },
+    toEmvCode: () => {
       return 'Not implemented';
     },
   };
@@ -51,10 +63,10 @@ export function extractElements(emvElements: ValidTags): PixEmvElements {
 
   if (isPIX(emvElements, 'static')) {
     return {
-      type: 'static',
+      type: PixElementType.STATIC,
       ...basicElements,
       pixKey: emvElements.getSubTag(
-        EmvMaiSchema.TAG_MAI_URL,
+        EmvMaiSchema.TAG_MAI_PIXKEY,
         EmvSchema.TAG_MAI
       ),
       infoAdicional: emvElements.getSubTag(
@@ -68,15 +80,12 @@ export function extractElements(emvElements: ValidTags): PixEmvElements {
     };
   } else if (isPIX(emvElements, 'dynamic')) {
     return {
-      type: 'dynamic',
+      type: PixElementType.DYNAMIC,
       ...basicElements,
-      url: emvElements.getSubTag(
-        EmvMaiSchema.TAG_MAI_PIXKEY,
-        EmvSchema.TAG_MAI
-      ),
+      url: emvElements.getSubTag(EmvMaiSchema.TAG_MAI_URL, EmvSchema.TAG_MAI),
     };
   }
-  return { type: 'invalid' };
+  return { type: PixElementType.INVALID, details: '' };
 }
 
 export function fetchPayload() {

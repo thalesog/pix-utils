@@ -1,5 +1,7 @@
 import {
   DynamicPixEmvElements,
+  InvalidPixElements,
+  PixElementType,
   PixEmvElements,
   StaticPixEmvElements,
 } from './types/pixElements';
@@ -34,14 +36,20 @@ export function isPIX(
   }
 }
 
+export function isInvalid(
+  pixElement: PixEmvElements
+): pixElement is InvalidPixElements {
+  return pixElement && pixElement.type === PixElementType.INVALID;
+}
+
 export function isStaticPix(
   pixElement: PixEmvElements
 ): pixElement is StaticPixEmvElements {
-  return pixElement && pixElement.type === 'static';
+  return pixElement && pixElement.type === PixElementType.STATIC;
 }
 
 export function isDynamicPix(
   pixElement: PixEmvElements
 ): pixElement is DynamicPixEmvElements {
-  return pixElement && pixElement.type === 'dynamic';
+  return pixElement && pixElement.type === PixElementType.DYNAMIC;
 }
