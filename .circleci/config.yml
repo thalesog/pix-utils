@@ -1,70 +1,68 @@
-# https://circleci.com/docs/2.0/language-javascript/
-version: 2
+version: 2.1
+
+workflows:
+  main:
+    jobs:
+      - tests:
+          version: 12
+      - tests:
+          version: 14
+      - tests:
+          version: latest
+      - lint
+      - integration
+
 jobs:
-  'node-12':
+  tests:
+    parameters:
+      version:
+        type: string
     docker:
-      - image: circleci/node:12
-    steps:
-      - checkout
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-      - run: npm install
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-      - run: npm test
-      - run: npm run cov:send
-      - run: npm run cov:check
-      - store_test_results:
-          path: $CIRCLE_WORKING_DIRECTORY/tests
-  'node-14':
-    docker:
-      - image: circleci/node:14
+      - image: circleci/node:<< parameters.version >>
     steps:
       - checkout
       - restore_cache:
+          name: Restore Yarn Package Cache
           keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            - v1-dependencies-
-      - run: npm install
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-      - run: npm test
-      - run: npm run cov:send
-      - run: npm run cov:check
+            - yarn-packages-{{ checksum "yarn.lock" }}
+      - run:
+          name: 'Unit test with Node.js << parameters.version >>'
+          command: |
+            yarn test
+      - run:
+          name: Unit test with Node.js << parameters.version >> with JUnit as reporter
+          command: jest --ci --runInBand --reporters=default --reporters=jest-junit
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
       - store_test_results:
-          path: $CIRCLE_WORKING_DIRECTORY/tests
-  'node-latest':
+          path: ./reports/junit/
+      - store_artifacts:
+          path: ./reports/junit
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+
+  coverage:
     docker:
       - image: circleci/node:latest
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            - v1-dependencies-
-      - run: npm install
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-      - run: npm test
-      - run: npm run cov:send
-      - run: npm run cov:check
-      - store_test_results:
-          path: $CIRCLE_WORKING_DIRECTORY/tests
+      - run:
+          name: 'Run tests coverage'
+          command: |
+            yarn install
+            yarn cov:send
+            yarn cov:check
 
-workflows:
-  version: 2
-  build:
-    jobs:
-      - 'node-12'
-      - 'node-14'
-      - 'node-latest'
+  lint:
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - checkout
+      - run:
+          name: 'Lint Code'
+          command: |
+            yarn install
+            yarn lint
