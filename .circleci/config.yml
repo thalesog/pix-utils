@@ -9,8 +9,8 @@ workflows:
           version: '14'
       - tests:
           version: 'latest'
+      - coverage
       - lint
-      - integration
 
 jobs:
   tests:
