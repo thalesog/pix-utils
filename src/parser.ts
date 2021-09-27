@@ -14,7 +14,7 @@ import {
   ValidTags,
 } from './types/pixEmvSchema';
 import { PixError } from './types/pixError';
-import { hasError, isPix } from './validate';
+import { hasElementError, isPix } from './validate';
 
 export function parsePix(brCode: string): PixObject | PixError {
   // Parse EMV Code
@@ -28,7 +28,9 @@ export function parsePix(brCode: string): PixObject | PixError {
 
   // Extract Elements
   const elements = extractElements(emvElements);
-  if (hasError(elements)) return { error: true, message: 'invalid emv code' };
+
+  if (hasElementError(elements))
+    return { error: true, message: 'invalid emv code' };
 
   return generatePixObject(elements);
 }
@@ -70,16 +72,16 @@ export function extractElements(
         EmvSchema.TAG_ADDITIONAL_DATA
       ),
     };
-  } else if (isPix(emvElements, 'dynamic')) {
+  }
+  if (isPix(emvElements, 'dynamic')) {
     return {
       type: PixElementType.DYNAMIC,
       ...basicElements,
       url: emvElements.getSubTag(EmvMaiSchema.TAG_MAI_URL, EmvSchema.TAG_MAI),
     };
   }
-  return { error: true, message: 'invalid pix' };
-}
+  if (!isPix(emvElements, 'pix') || !isPix(emvElements, 'valid'))
+    return { error: true, message: 'invalid pix' };
 
-export function fetchPayload() {
-  return;
+  return { error: true, message: 'error' };
 }
