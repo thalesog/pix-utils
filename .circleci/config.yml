@@ -39,7 +39,7 @@ jobs:
             yarn test
       - run:
           name: Unit test with Node.js << parameters.version >> with JUnit as reporter
-          command: jest --ci --runInBand --reporters=default --reporters=jest-junit
+          command: yarn jest --ci --runInBand --reporters=default --reporters=jest-junit
           environment:
             JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
       - store_test_results:
