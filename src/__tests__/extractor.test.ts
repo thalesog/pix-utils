@@ -1,15 +1,17 @@
-import { parsePix } from '..';
-import {
-  DynamicPixEmvElements,
-  PixElementType,
-  StaticPixEmvElements,
-} from '../types/pixElements';
+import { parsePix, PixElementType } from '..';
+import { hasError, isDynamicPix, isStaticPix } from '../validate';
 
 import { DYNAMIC_TEST_EMV, STATIC_TEST_EMV } from './parser.test';
 
 describe('EMV Data Extractor', () => {
   it('should be able to extract basic elements from a static pix', () => {
-    const parsedPix = parsePix(STATIC_TEST_EMV) as StaticPixEmvElements;
+    const parsedPix = parsePix(STATIC_TEST_EMV);
+
+    expect(hasError(parsedPix)).toBe(false);
+    if (hasError(parsedPix)) return;
+
+    expect(isStaticPix(parsedPix)).toBe(true);
+    if (!isStaticPix(parsedPix)) return;
 
     // PARSE MAI
     expect(parsedPix.type).toBe(PixElementType.STATIC);
@@ -17,22 +19,27 @@ describe('EMV Data Extractor', () => {
     expect(parsedPix.transactionCurrency).toBe('986');
     expect(parsedPix.countryCode).toBe('BR');
     expect(parsedPix.merchantName).toBe('Thales Ogliari');
-    expect(parsedPix.merchantCity).toBe('SC');
+    expect(parsedPix.merchantCity).toBe('SAO MIGUEL DO O');
     expect(parsedPix.pixKey).toBe('thalesog@me.com');
   });
 
   it('should be able to extract basic elements from a dynamic pix', () => {
-    const parsedPix = parsePix(DYNAMIC_TEST_EMV) as DynamicPixEmvElements;
+    const parsedPix = parsePix(DYNAMIC_TEST_EMV);
 
-    // PARSE MAI
+    expect(hasError(parsedPix)).toBe(false);
+    if (hasError(parsedPix)) return;
+
+    expect(isDynamicPix(parsedPix)).toBe(true);
+    if (!isDynamicPix(parsedPix)) return;
+
     expect(parsedPix.type).toBe(PixElementType.DYNAMIC);
     expect(parsedPix.merchantCategoryCode).toBe('0000');
     expect(parsedPix.transactionCurrency).toBe('986');
     expect(parsedPix.countryCode).toBe('BR');
-    expect(parsedPix.merchantName).toBe('Pix');
-    expect(parsedPix.merchantCity).toBe('BRASILIA');
+    expect(parsedPix.merchantName).toBe('Thales Ogliari');
+    expect(parsedPix.merchantCity).toBe('SAO MIGUEL DO O');
     expect(parsedPix.url).toBe(
-      'qr-h.sandbox.pix.bcb.gov.br/rest/api/v2/cfe8166acaff4a62a18b7b766ef57c70'
+      'payload.psp.com/3ec9d2f9-5f03-4e0e-820d-63a81e769e87'
     );
   });
 });
