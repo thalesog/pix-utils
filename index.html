@@ -64,11 +64,106 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
-				<a href="#pix-utils---rewrite-v2" id="pix-utils---rewrite-v2" style="color: inherit; text-decoration: none;">
-					<h1>PIX Utils - Rewrite v2</h1>
+				<h1 align="center">Pix-Utils 🧰</h1>
+				<p align="center">
+					<a href="https://www.npmjs.com/package/pix-utils" target="_blank">
+						<img alt="Version" src="https://img.shields.io/npm/v/pix-utils.svg?style=flat-square">
+					</a>
+					<a href="https://circleci.com/gh/thalesog/pix-utils/tree/master" target="_blank">
+						<img alt="CircleCI" src="https://circleci.com/gh/thalesog/pix-utils/tree/master.svg?style=svg" />
+					</a>
+					<a href="https://github.com/thalesog/pix-utils/blob/master/LICENSE" target="blank">
+						<img src="https://img.shields.io/github/license/thalesog/pix-utils?style=flat-square" alt="github-profile-readme-generator license" />
+					</a>
+					<a href="https://github.com/thalesog/pix-utils/fork" target="blank">
+						<img src="https://img.shields.io/github/forks/thalesog/pix-utils?style=flat-square" alt="github-profile-readme-generator forks"/>
+					</a>
+					<a href="https://github.com/thalesog/pix-utils/stargazers" target="blank">
+						<img src="https://img.shields.io/github/stars/thalesog/pix-utils?style=flat-square" alt="github-profile-readme-generator stars"/>
+					</a>
+					<a href="https://github.com/thalesog/pix-utils/issues" target="blank">
+						<img src="https://img.shields.io/github/issues/thalesog/pix-utils?style=flat-square" alt="github-profile-readme-generator issues"/>
+					</a>
+					<a href="https://github.com/thalesog/pix-utils/pulls" target="blank">
+						<img src="https://img.shields.io/github/issues-pr/thalesog/pix-utils?style=flat-square" alt="github-profile-readme-generator pull-requests"/>
+					</a>
+				</p>
+				<blockquote>
+					<p>Pix-Utils is a set of tools to parse, generate and validate payments of Brazil Instant Payment System (Pix), making fast and simple to handle charges and proccess then in your project.</p>
+				</blockquote>
+				<a href="#🚀-usage" id="🚀-usage" style="color: inherit; text-decoration: none;">
+					<h2>🚀 Usage</h2>
 				</a>
-				<a href="#here-is-the-roadmap-to-pix-utils-v200---reborn" id="here-is-the-roadmap-to-pix-utils-v200---reborn" style="color: inherit; text-decoration: none;">
-					<h2>Here is the roadmap to Pix Utils v2.0.0 - Reborn</h2>
+				<ol>
+					<li>Install the package in your project</li>
+				</ol>
+				<pre><code class="language-sh">yarn add pix-utils
+</code></pre>
+				<ul>
+					<li>Create Static Pix</li>
+				</ul>
+				<pre><code class="language-ts"><span class="hljs-keyword">import</span> { createStaticPix } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;pix-utils&#x27;</span>;
+
+<span class="hljs-keyword">const</span> pix = createStaticPix({
+  <span class="hljs-attr">merchantName</span>: <span class="hljs-string">&#x27;Thales Ogliari&#x27;</span>,
+  <span class="hljs-attr">merchantCity</span>: <span class="hljs-string">&#x27;Sao Miguel do Oeste&#x27;</span>,
+  <span class="hljs-attr">pixKey</span>: <span class="hljs-string">&#x27;nubank@thalesog.com&#x27;</span>,
+  <span class="hljs-attr">infoAdicional</span>: <span class="hljs-string">&#x27;Gerado por Pix-Utils&#x27;</span>,
+  <span class="hljs-attr">transactionAmount</span>: <span class="hljs-number">1</span>,
+  <span class="hljs-attr">txid</span>: <span class="hljs-string">&#x27;&#x27;</span>,
+});
+
+pix.toBRCode();
+<span class="hljs-comment">// 00020126650014br.gov.bcb.pix0119nubank@thalesog.com0220Gerado por Pix-Utils52040000530398654041.005802BR5914Thales Ogliari6015SAO MIGUEL DO O62070503***6304059A</span>
+</code></pre>
+				<ul>
+					<li>Create Dynamic Pix</li>
+				</ul>
+				<pre><code class="language-ts"><span class="hljs-keyword">import</span> { createDynamicPix } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;pix-utils&#x27;</span>;
+
+<span class="hljs-keyword">const</span> pix = createDynamicPix({
+  <span class="hljs-attr">merchantName</span>: <span class="hljs-string">&#x27;Thales Ogliari&#x27;</span>,
+  <span class="hljs-attr">merchantCity</span>: <span class="hljs-string">&#x27;Sao Miguel do Oeste&#x27;</span>,
+  <span class="hljs-attr">url</span>: <span class="hljs-string">&#x27;payload.psp.com/3ec9d2f9-5f03-4e0e-820d-63a81e769e87&#x27;</span>,
+});
+
+pix.toBRCode();
+<span class="hljs-comment">//  00020126740014br.gov.bcb.pix2552payload.psp.com/3ec9d2f9-5f03-4e0e-820d-63a81e769e875204000053039865802BR5914Thales Ogliari6015SAO MIGUEL DO O62070503***63040C64</span>
+</code></pre>
+				<ul>
+					<li>Parse BRCode</li>
+				</ul>
+				<pre><code class="language-js"><span class="hljs-keyword">const</span> pix = parsePix(
+  <span class="hljs-string">&#x27;00020126650014br.gov.bcb.pix0119nubank@thalesog.com0220Gerado por Pix-Utils52040000530398654041.005802BR5914Thales Ogliari6015SAO MIGUEL DO O62070503***6304059A&#x27;</span>
+);
+
+<span class="hljs-comment">// {</span>
+<span class="hljs-comment">//   type: &#x27;STATIC&#x27;,</span>
+<span class="hljs-comment">//   merchantCategoryCode: &#x27;0000&#x27;,</span>
+<span class="hljs-comment">//   transactionCurrency: &#x27;986&#x27;,</span>
+<span class="hljs-comment">//   countryCode: &#x27;BR&#x27;,</span>
+<span class="hljs-comment">//   merchantName: &#x27;Thales Ogliari&#x27;,</span>
+<span class="hljs-comment">//   merchantCity: &#x27;SAO MIGUEL DO O&#x27;,</span>
+<span class="hljs-comment">//   pixKey: &#x27;nubank@thalesog.com&#x27;,</span>
+<span class="hljs-comment">//   transactionAmount: 1,</span>
+<span class="hljs-comment">//   infoAdicional: &#x27;Gerado por Pix-Utils&#x27;,</span>
+<span class="hljs-comment">//   txid: &#x27;***&#x27;,</span>
+<span class="hljs-comment">//   toBRCode: [Function: toBRCode],</span>
+<span class="hljs-comment">//   toImage: [Function: toImage]</span>
+<span class="hljs-comment">// }</span>
+</code></pre>
+				<ul>
+					<li>Export to Base64 Image</li>
+				</ul>
+				<pre><code class="language-js"><span class="hljs-keyword">const</span> pix = parsePix(
+  <span class="hljs-string">&#x27;00020126650014br.gov.bcb.pix0119nubank@thalesog.com0220Gerado por Pix-Utils52040000530398654041.005802BR5914Thales Ogliari6015SAO MIGUEL DO O62070503***6304059A&#x27;</span>
+);
+
+pix.toImage();
+<span class="hljs-comment">// data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOQAAADkCAYAAACIV4iNAAAAAklEQVR4AewaftIAAAwHSURBVO3BQW4sy7LgQDKh/W...</span>
+</code></pre>
+				<a href="#🛣️-roadmap" id="🛣️-roadmap" style="color: inherit; text-decoration: none;">
+					<h2>🛣️ Roadmap</h2>
 				</a>
 				<ul>
 					<li><input checked="" disabled="" type="checkbox"> Generate payments based on parameters<ul>
@@ -79,13 +174,33 @@
 					<li><input checked="" disabled="" type="checkbox"> Parse and validate EMV Codes</li>
 					<li><input checked="" disabled="" type="checkbox"> Export generated/parsed payment to Image</li>
 					<li><input checked="" disabled="" type="checkbox"> Export generated/parsed payment to EMV Code</li>
-					<li><input checked="" disabled="" type="checkbox"> Fetch, parse and validate remote payloads from dynamic payments</li>
+					<li><input checked="" disabled="" type="checkbox"> Fetch, parse and validate remote payloads from dynamic payments<ul>
+							<li><input disabled="" type="checkbox"> Verify if has already expired</li>
+						</ul>
+					</li>
 					<li><input disabled="" type="checkbox"> Improve tests</li>
 					<li><input disabled="" type="checkbox"> Doccumentation with all methods, parameters and some examples</li>
-					<li><input disabled="" type="checkbox"> Beautiful README with shields and stuff</li>
+					<li><input checked="" disabled="" type="checkbox"> Beautiful README with shields and stuff</li>
+					<li><input disabled="" type="checkbox"> Add dynamic payment tests</li>
 				</ul>
+				<a href="#🍰-contributing" id="🍰-contributing" style="color: inherit; text-decoration: none;">
+					<h2>🍰 Contributing</h2>
+				</a>
+				<p>Please contribute using <a href="https://guides.github.com/introduction/flow">GitHub Flow</a>. Create a branch, add commits, and <a href="https://github.com/thalesog/pix-utils/compare">open a pull request</a>.</p>
+				<a href="#🙇-special-thanks" id="🙇-special-thanks" style="color: inherit; text-decoration: none;">
+					<h2>🙇 Special Thanks</h2>
+				</a>
+				<ul>
+					<li><a href="https://github.com/kefranabg">@kefranabg</a> for <a href="https://github.com/kefranabg/readme-md-generator">readme-md-generator</a></li>
+				</ul>
+				<a href="#📝-license" id="📝-license" style="color: inherit; text-decoration: none;">
+					<h2>📝 License</h2>
+				</a>
+				<p>This project is under <a href="https://github.com/thalesog/pix-utils/blob/master/LICENSE">MIT</a> license.</p>
 				<hr>
-				<p>Made with 💚 by <a href="https://github.com/thalesog">@thalesog</a></p>
+				<p align="center">
+					Developed with 💚 by <a href="https://github.com/thalesog">@thalesog</a> 🇧🇷
+				</p>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -229,6 +344,9 @@
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#generatepixobject" class="tsd-kind-icon">generate<wbr>Pix<wbr>Object</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#haselementerror" class="tsd-kind-icon">has<wbr>Element<wbr>Error</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#haserror" class="tsd-kind-icon">has<wbr>Error</a>
