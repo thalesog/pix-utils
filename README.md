@@ -74,12 +74,32 @@ pix.toBRCode();
 const pix = parsePix(
   '00020126650014br.gov.bcb.pix0119nubank@thalesog.com0220Gerado por Pix-Utils52040000530398654041.005802BR5914Thales Ogliari6015SAO MIGUEL DO O62070503***6304059A'
 );
+
+// {
+//   type: 'STATIC',
+//   merchantCategoryCode: '0000',
+//   transactionCurrency: '986',
+//   countryCode: 'BR',
+//   merchantName: 'Thales Ogliari',
+//   merchantCity: 'SAO MIGUEL DO O',
+//   pixKey: 'nubank@thalesog.com',
+//   transactionAmount: 1,
+//   infoAdicional: 'Gerado por Pix-Utils',
+//   txid: '***',
+//   toBRCode: [Function: toBRCode],
+//   toImage: [Function: toImage]
+// }
 ```
 
-- Export to Image
+- Export to Base64 Image
 
 ```js
-yarn run test
+const pix = parsePix(
+  '00020126650014br.gov.bcb.pix0119nubank@thalesog.com0220Gerado por Pix-Utils52040000530398654041.005802BR5914Thales Ogliari6015SAO MIGUEL DO O62070503***6304059A'
+);
+
+pix.toImage();
+// data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOQAAADkCAYAAACIV4iNAAAAAklEQVR4AewaftIAAAwHSURBVO3BQW4sy7LgQDKh/W...
 ```
 
 ## 🛣️ Roadmap
@@ -95,6 +115,7 @@ yarn run test
 - [ ] Improve tests
 - [ ] Doccumentation with all methods, parameters and some examples
 - [x] Beautiful README with shields and stuff
+- [ ] Add dynamic payment tests
 
 ## 🍰 Contributing
 
