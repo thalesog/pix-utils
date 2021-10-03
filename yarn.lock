@@ -4468,14 +4468,6 @@ pirates@^4.0.1:
   dependencies:
     node-modules-regexp "^1.0.0"
 
-pix-utils@../pix-utils:
-  version "2.1.0"
-  dependencies:
-    axios "^0.21.4"
-    crc "^3.8.0"
-    node-crc16 "^2.0.7"
-    qrcode "^1.4.4"
-
 pkg-dir@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/pkg-dir/-/pkg-dir-2.0.0.tgz#f6d5d1109e19d63edf428e0bd57e12777615334b"
