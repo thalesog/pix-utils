@@ -29,6 +29,7 @@ export type StaticPixEmvElements = PixEmvBasicElements & {
   readonly pixKey: string;
   readonly txid?: string;
   readonly infoAdicional?: string;
+  readonly pss?: string;
 };
 
 export type InvalidPixElements = {

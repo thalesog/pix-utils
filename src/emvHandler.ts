@@ -21,6 +21,7 @@ function generateMAI(elements: PixElements): string {
       generateEmvElement(EmvMaiSchema.TAG_MAI_GUI, EmvMaiSchema.BC_GUI),
       generateEmvElement(EmvMaiSchema.TAG_MAI_PIXKEY, elements.pixKey),
       generateEmvElement(EmvMaiSchema.TAG_MAI_INFO_ADD, elements.infoAdicional),
+      generateEmvElement(EmvMaiSchema.TAG_MAI_PSS, elements.pss),
     ].join('');
   } else if (elements.type === PixElementType.DYNAMIC) {
     return [
