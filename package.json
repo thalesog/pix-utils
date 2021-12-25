@@ -1,7 +1,7 @@
 {
   "license": "MIT",
   "name": "pix-utils",
-  "version": "2.0.0",
+  "version": "0.0.0-development",
   "author": "Thales Ogliari",
   "description": "Set of tools to parse, generate and validate payments of Brazil Instant Payment System (Pix)",
   "keywords": [
@@ -19,7 +19,7 @@
   "homepage": "https://github.com/thalesog/pix-utils#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thalesog/pix-utils.git"
+    "url": "https://github.com/thalesog/pix-utils.git"
   },
   "bugs": {
     "url": "https://github.com/thalesog/pix-utils/issues"
@@ -54,7 +54,8 @@
     "doc:publish": "gh-pages -m \"[ci skip] Updates\" -d build/docs",
     "reset-hard": "git clean -dfx && git reset --hard && yarn",
     "prepare-release": "run-s reset-hard test cov:check doc:html doc:publish",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "release": "semantic-release"
   },
   "dependencies": {
     "axios": "^0.21.4",
@@ -90,7 +91,8 @@
     "ts-jest": "^27.1.2",
     "ts-node": "^10.4.0",
     "typedoc": "^0.22.10",
-    "typescript": "^4.5.4"
+    "typescript": "^4.5.4",
+    "semantic-release": "^18.0.1"
   },
   "files": [
     "build/main",
