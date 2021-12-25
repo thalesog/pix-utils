@@ -1,41 +1,44 @@
-<h1 align="center">Pix-Utils 🧰</h1>
+<p align="center"><img alt="pix-utils" src="https://raw.githubusercontent.com/thalesog/pix-utils/master/assets/logo-pix.png" width="128px" /></p>
+
+# <p align="center">Pix-Utils<p>
+
 <p align="center">
 
   <a href="https://www.npmjs.com/package/pix-utils" target="_blank">
-    <img alt="Version" src="https://img.shields.io/npm/v/pix-utils.svg?style=flat-square">
+    <img alt="Version" src="https://img.shields.io/npm/v/pix-utils.svg?style=for-the-badge&color=blueviolet&logo=npm">
   </a>
-    <a href="https://circleci.com/gh/thalesog/pix-utils/tree/master" target="_blank">
-    <img alt="CircleCI" src="https://circleci.com/gh/thalesog/pix-utils/tree/master.svg?style=svg" />
+<a href="https://circleci.com/gh/thalesog/pix-utils">
+    <img alt="build status" src="https://img.shields.io/circleci/build/gh/thalesog/pix-utils/master?style=for-the-badge&color=blueviolet&logo=CircleCI">
   </a>
   <a href="https://github.com/thalesog/pix-utils/blob/master/LICENSE" target="blank">
-<img src="https://img.shields.io/github/license/thalesog/pix-utils?style=flat-square" alt="github-profile-readme-generator license" />
-</a>
+<img src="https://img.shields.io/github/license/thalesog/pix-utils?style=for-the-badge&color=blueviolet" alt="github-profile-readme-generator license" />
+</a><br />
 <a href="https://github.com/thalesog/pix-utils/fork" target="blank">
-<img src="https://img.shields.io/github/forks/thalesog/pix-utils?style=flat-square" alt="github-profile-readme-generator forks"/>
+<img src="https://img.shields.io/github/forks/thalesog/pix-utils?style=for-the-badge&color=blueviolet" alt="github-profile-readme-generator forks"/>
 </a>
 <a href="https://github.com/thalesog/pix-utils/stargazers" target="blank">
-<img src="https://img.shields.io/github/stars/thalesog/pix-utils?style=flat-square" alt="github-profile-readme-generator stars"/>
+<img src="https://img.shields.io/github/stars/thalesog/pix-utils?style=for-the-badge&color=blueviolet" alt="github-profile-readme-generator stars"/>
 </a>
 <a href="https://github.com/thalesog/pix-utils/issues" target="blank">
-<img src="https://img.shields.io/github/issues/thalesog/pix-utils?style=flat-square" alt="github-profile-readme-generator issues"/>
+<img src="https://img.shields.io/github/issues/thalesog/pix-utils?style=for-the-badge&color=blueviolet" alt="github-profile-readme-generator issues"/>
 </a>
 <a href="https://github.com/thalesog/pix-utils/pulls" target="blank">
-<img src="https://img.shields.io/github/issues-pr/thalesog/pix-utils?style=flat-square" alt="github-profile-readme-generator pull-requests"/>
+<img src="https://img.shields.io/github/issues-pr/thalesog/pix-utils?style=for-the-badge&color=blueviolet" alt="github-profile-readme-generator pull-requests"/>
 </a>
 
 </p>
 
 > Pix-Utils is a set of tools to parse, generate and validate payments of Brazil Instant Payment System (Pix), making fast and simple to handle charges and proccess then in your project.
 
-## 🚀 Usage
+# 🚀 Usage
 
-1. Install the package in your project
+### Install the package in your project
 
 ```sh
 yarn add pix-utils
 ```
 
-- Create Static Pix
+### Create Static Pix
 
 ```ts
 import { createStaticPix } from 'pix-utils';
@@ -53,7 +56,7 @@ pix.toBRCode();
 // 00020126650014br.gov.bcb.pix0119nubank@thalesog.com0220Gerado por Pix-Utils52040000530398654041.005802BR5914Thales Ogliari6015SAO MIGUEL DO O62070503***6304059A
 ```
 
-- Create Dynamic Pix
+### Create Dynamic Pix
 
 ```ts
 import { createDynamicPix } from 'pix-utils';
@@ -68,7 +71,7 @@ pix.toBRCode();
 //  00020126740014br.gov.bcb.pix2552payload.psp.com/3ec9d2f9-5f03-4e0e-820d-63a81e769e875204000053039865802BR5914Thales Ogliari6015SAO MIGUEL DO O62070503***63040C64
 ```
 
-- Parse BRCode
+### Parse BRCode
 
 ```js
 const pix = parsePix(
@@ -91,7 +94,7 @@ const pix = parsePix(
 // }
 ```
 
-- Export to Base64 Image
+### Export to Base64 Image
 
 ```js
 const pix = parsePix(
@@ -102,7 +105,7 @@ pix.toImage();
 // data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOQAAADkCAYAAACIV4iNAAAAAklEQVR4AewaftIAAAwHSURBVO3BQW4sy7LgQDKh/W...
 ```
 
-## 🛣️ Roadmap
+# 🛣️ Roadmap
 
 - [x] Generate payments based on parameters
   - [x] Static
@@ -117,19 +120,16 @@ pix.toImage();
 - [x] Beautiful README with shields and stuff
 - [ ] Add dynamic payment tests
 
-## 🍰 Contributing
+# 🍰 Contributing
 
 Please contribute using [GitHub Flow](https://guides.github.com/introduction/flow). Create a branch, add commits, and [open a pull request](https://github.com/thalesog/pix-utils/compare).
 
-## 🙇 Special Thanks
-
-- [@kefranabg](https://github.com/kefranabg) for [readme-md-generator](https://github.com/kefranabg/readme-md-generator)
-
-## 📝 License
+# 📝 License
 
 This project is under [MIT](https://github.com/thalesog/pix-utils/blob/master/LICENSE) license.
 
-<hr>
+#
+
 <p align="center">
  Developed with 💚 by <a href="https://github.com/thalesog">@thalesog</a> 🇧🇷
 </p>
