@@ -4,14 +4,17 @@ workflows:
   main:
     jobs:
       - tests:
-          version: '12'
-      - tests:
           version: '14'
       - tests:
           version: 'lts'
+      - tests:
+          version: 'latest'
       - coverage
       - lint
-
+      - release:
+          filters:
+            branches:
+              only: master
 jobs:
   tests:
     parameters:
