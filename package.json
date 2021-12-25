@@ -34,7 +34,7 @@
     "build:module": "tsc -p tsconfig.module.json",
     "lint": "run-s lint:*",
     "lint:prettier": "prettier \"src/**/*.ts\" --write",
-    "lint:lint": "eslint src --ext .ts --fix",
+    "lint:eslint": "eslint src --ext .ts --fix",
     "test": "run-s build test:*",
     "test:lint": "eslint src --ext .ts",
     "test:prettier": "prettier \"src/**/*.ts\" --list-different",
@@ -124,8 +124,10 @@
     ]
   },
   "lint-staged": {
-    "*.ts": "eslint src --ext .ts --fix",
-    "*.{ts,css,md}": "prettier \"src/**/*.ts\" --list-different --write"
+    "./src/**/*.ts": [
+      "yarn lint:eslint",
+      "yarn lint:prettier"
+    ]
   },
   "husky": {
     "hooks": {
