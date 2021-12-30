@@ -1,8 +1,7 @@
 import { parsePix, PixElementType } from '..';
 import { hasError, isDynamicPix, isStaticPix } from '../validate';
 
-import { DYNAMIC_TEST_EMV, STATIC_TEST_EMV } from './parser.test';
-
+import { DYNAMIC_TEST_EMV, STATIC_TEST_EMV } from './emvCodes';
 describe('EMV Data Extractor', () => {
   it('should be able to extract basic elements from a static pix', () => {
     const parsedPix = parsePix(STATIC_TEST_EMV);

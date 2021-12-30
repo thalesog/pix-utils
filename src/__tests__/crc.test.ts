@@ -1,6 +1,6 @@
 import { computeCRC } from '../crc';
 
-import { DYNAMIC_TEST_EMV, STATIC_TEST_EMV } from './parser.test';
+import { DYNAMIC_TEST_EMV, STATIC_TEST_EMV } from './emvCodes';
 
 describe('CRC Calculator and Parser', () => {
   it('should be able to calculate crc', () => {

@@ -51,8 +51,9 @@ export function extractElements(
   emvElements: ValidTags
 ): PixElements | PixError {
   const basicElements = extractMandatoryElements(emvElements);
-
   if (isPix(emvElements, 'static')) {
+    const amountNumber = +emvElements.getTag(EmvSchema.TAG_TRANSACTION_AMOUNT);
+    const transactionAmount = !isNaN(amountNumber) ? amountNumber : 0;
     return {
       type: PixElementType.STATIC,
       ...basicElements,
@@ -60,9 +61,7 @@ export function extractElements(
         EmvMaiSchema.TAG_MAI_PIXKEY,
         EmvSchema.TAG_MAI
       ),
-      transactionAmount: Number(
-        emvElements.getTag(EmvSchema.TAG_TRANSACTION_AMOUNT)
-      ),
+      transactionAmount,
       infoAdicional: emvElements.getSubTag(
         EmvMaiSchema.TAG_MAI_INFO_ADD,
         EmvSchema.TAG_MAI

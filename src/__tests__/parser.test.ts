@@ -7,11 +7,12 @@ import {
   ValidTags,
 } from '../types/pixEmvSchema';
 
-export const STATIC_TEST_EMV =
-  '00020126510014br.gov.bcb.pix0115thalesog@me.com0210Pedido 123520400005303986540510.005802BR5914Thales Ogliari6015SAO MIGUEL DO O62070503***63044367';
-
-export const DYNAMIC_TEST_EMV =
-  '00020126740014br.gov.bcb.pix2552payload.psp.com/3ec9d2f9-5f03-4e0e-820d-63a81e769e875204000053039865802BR5914Thales Ogliari6015SAO MIGUEL DO O62070503***63040C64';
+import {
+  DYNAMIC_TEST_EMV,
+  STATIC_TEST_EMV,
+  STATIC_TEST_NO_VALUE_ELEMENT_EMV,
+  STATIC_TEST_NO_VALUE_EMV,
+} from './emvCodes';
 
 describe('EMV Parser', () => {
   it('should be able to parse mandatory elements from a qrcode', () => {
@@ -62,6 +63,36 @@ describe('EMV Parser', () => {
     expect(pix.merchantCity).toBe('SAO MIGUEL DO O');
     expect(pix.pixKey).toBe('thalesog@me.com');
     expect(pix.transactionAmount).toBe(10);
+    expect(pix.infoAdicional).toBe('Pedido 123');
+    expect(pix.txid).toBe('***');
+  });
+
+  it('should be able to parse a static pix with no value', () => {
+    const pix = parsePix(STATIC_TEST_NO_VALUE_EMV) as PixStaticObject;
+
+    expect(pix.type).toBe('STATIC');
+    expect(pix.merchantCategoryCode).toBe('0000');
+    expect(pix.transactionCurrency).toBe('986');
+    expect(pix.countryCode).toBe('BR');
+    expect(pix.merchantName).toBe('Thales Ogliari');
+    expect(pix.merchantCity).toBe('SAO MIGUEL DO O');
+    expect(pix.pixKey).toBe('thalesog@me.com');
+    expect(pix.transactionAmount).toBe(0);
+    expect(pix.infoAdicional).toBe('Pedido 123');
+    expect(pix.txid).toBe('***');
+  });
+
+  it('should be able to parse a static pix with no value element', () => {
+    const pix = parsePix(STATIC_TEST_NO_VALUE_ELEMENT_EMV) as PixStaticObject;
+
+    expect(pix.type).toBe('STATIC');
+    expect(pix.merchantCategoryCode).toBe('0000');
+    expect(pix.transactionCurrency).toBe('986');
+    expect(pix.countryCode).toBe('BR');
+    expect(pix.merchantName).toBe('Thales Ogliari');
+    expect(pix.merchantCity).toBe('SAO MIGUEL DO O');
+    expect(pix.pixKey).toBe('thalesog@me.com');
+    expect(pix.transactionAmount).toBe(0);
     expect(pix.infoAdicional).toBe('Pedido 123');
     expect(pix.txid).toBe('***');
   });

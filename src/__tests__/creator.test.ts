@@ -1,6 +1,10 @@
 import { createDynamicPix, createStaticPix, hasError } from '..';
 
-import { DYNAMIC_TEST_EMV, STATIC_TEST_EMV } from './parser.test';
+import {
+  DYNAMIC_TEST_EMV,
+  STATIC_TEST_EMV,
+  STATIC_TEST_NO_VALUE_EMV,
+} from './emvCodes';
 
 describe('EMV Code Creation', () => {
   it('should be able to create a static pix from mandatory fields', () => {
@@ -17,6 +21,22 @@ describe('EMV Code Creation', () => {
     if (hasError(staticPixFn)) return;
 
     expect(staticPixFn.toBRCode()).toBe(STATIC_TEST_EMV);
+  });
+
+  it('should be able to create a static pix from mandatory fields with no value', () => {
+    const staticPixFn = createStaticPix({
+      merchantName: 'Thales Ogliari',
+      merchantCity: 'SAO MIGUEL DO OESTE'.substr(0, 15),
+      pixKey: 'thalesog@me.com',
+      infoAdicional: 'Pedido 123',
+      txid: '',
+      transactionAmount: 0,
+    });
+
+    expect(hasError(staticPixFn)).toBe(false);
+    if (hasError(staticPixFn)) return;
+
+    expect(staticPixFn.toBRCode()).toBe(STATIC_TEST_NO_VALUE_EMV);
   });
 
   it('should be able to create a dynamic pix from mandatory fields', () => {
