@@ -1,4 +1,4 @@
-import { TextEncoder } from 'util';
+import { TextEncoder } from 'text-encoding';
 
 import numToHex from './utils/numToHex';
 
