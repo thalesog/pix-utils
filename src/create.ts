@@ -1,8 +1,9 @@
 import { generatePixObject } from './assembler';
 import {
   DynamicPixEmvElements,
+  PixDynamicObject,
   PixElementType,
-  PixObject,
+  PixStaticObject,
   StaticPixEmvElements,
 } from './types/pixElements';
 import { PixError } from './types/pixError';
@@ -41,23 +42,32 @@ const defaultStaticFields = {
 
 export function createStaticPix(
   params: CreateStaticPixParams
-): PixObject | PixError {
+): PixStaticObject | PixError {
   if (params.merchantName.length > 25)
     return {
       error: true,
       message: 'merchantName character limit exceeded (> 25)',
+      throwIfError: () => {
+        throw new Error('merchantName character limit exceeded (> 25)');
+      },
     };
 
   if (params.merchantCity.length > 15)
     return {
       error: true,
       message: 'merchantCity character limit exceeded (> 15)',
+      throwIfError: () => {
+        throw new Error('merchantCity character limit exceeded (> 15)');
+      },
     };
 
   if (params.txid.length > 25)
     return {
       error: true,
       message: 'txid character limit exceeded (> 25)',
+      throwIfError: () => {
+        throw new Error('txid character limit exceeded (> 25)');
+      },
     };
 
   const elements = {
@@ -66,22 +76,28 @@ export function createStaticPix(
     ...params,
   } as StaticPixEmvElements;
 
-  return generatePixObject(elements);
+  return generatePixObject(elements) as PixStaticObject;
 }
 
 export function createDynamicPix(
   params: CreateDynamicPixParams
-): PixObject | PixError {
+): PixDynamicObject | PixError {
   if (params.merchantName.length > 25)
     return {
       error: true,
       message: 'merchantName character limit exceeded (> 25)',
+      throwIfError: () => {
+        throw new Error('merchantName character limit exceeded (> 25)');
+      },
     };
 
   if (params.merchantCity.length > 15)
     return {
       error: true,
       message: 'merchantCity character limit exceeded (> 15)',
+      throwIfError: () => {
+        throw new Error('merchantCity character limit exceeded (> 15)');
+      },
     };
 
   const elements = {
@@ -91,5 +107,5 @@ export function createDynamicPix(
     merchantCity: params.merchantCity.substr(0, 15).toUpperCase(),
   } as DynamicPixEmvElements;
 
-  return generatePixObject(elements);
+  return generatePixObject(elements) as PixDynamicObject;
 }

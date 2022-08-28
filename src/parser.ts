@@ -14,23 +14,23 @@ import {
   ValidTags,
 } from './types/pixEmvSchema';
 import { PixError } from './types/pixError';
+import { generateErrorObject } from './utils/generateErrorObject';
 import { hasElementError, isPix } from './validate';
 
 export function parsePix(brCode: string): PixObject | PixError {
   // Parse EMV Code
   const emvElements = parseEmv({ emvCode: brCode });
-  if (!emvElements.isValid) return { error: true, message: 'invalid emv code' };
+  if (!emvElements.isValid) return generateErrorObject('invalid emv code');
 
   // Validate CRC16
   const crc = computeCRC(brCode);
   if (crc !== emvElements.getTag(EmvSchema.TAG_CRC))
-    return { error: true, message: 'invalid crc' };
+    return generateErrorObject('invalid crc');
 
   // Extract Elements
   const elements = extractElements(emvElements);
 
-  if (hasElementError(elements))
-    return { error: true, message: 'invalid emv code' };
+  if (hasElementError(elements)) return generateErrorObject(elements.message);
 
   return generatePixObject(elements);
 }
@@ -80,7 +80,7 @@ export function extractElements(
     };
   }
   if (!isPix(emvElements, 'pix') || !isPix(emvElements, 'valid'))
-    return { error: true, message: 'invalid pix' };
+    return generateErrorObject('invalid pix');
 
-  return { error: true, message: 'error' };
+  return generateErrorObject('error');
 }
