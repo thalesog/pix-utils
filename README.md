@@ -1,4 +1,4 @@
-<p align="center"><img alt="pix-utils" src="https://raw.githubusercontent.com/thalesog/pix-utils/master/assets/logo-pix.png" width="128px" /></p>
+<p align="center"><img alt="pix-utils" src="./examples/example-react/public/logo-pix.png" width="128px" /></p>
 
 # <p align="center">Pix-Utils<p>
 
