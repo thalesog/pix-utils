@@ -13,6 +13,21 @@ describe('EMV Code Creation', () => {
       merchantCity: 'SAO MIGUEL DO OESTE'.substr(0, 15),
       pixKey: 'thalesog@me.com',
       infoAdicional: 'Pedido 123',
+      transactionAmount: 10,
+    });
+
+    expect(hasError(staticPixFn)).toBe(false);
+    if (hasError(staticPixFn)) return;
+
+    expect(staticPixFn.toBRCode()).toBe(STATIC_TEST_EMV);
+  });
+
+  it('should be able to create a static pix from mandatory fields and empty txid', () => {
+    const staticPixFn = createStaticPix({
+      merchantName: 'Thales Ogliari',
+      merchantCity: 'SAO MIGUEL DO OESTE'.substr(0, 15),
+      pixKey: 'thalesog@me.com',
+      infoAdicional: 'Pedido 123',
       txid: '',
       transactionAmount: 10,
     });
@@ -23,7 +38,7 @@ describe('EMV Code Creation', () => {
     expect(staticPixFn.toBRCode()).toBe(STATIC_TEST_EMV);
   });
 
-  it('should be able to create a static pix from mandatory fields with no value', () => {
+  it('should be able to create a static pix from mandatory fields with no amount defined', () => {
     const staticPixFn = createStaticPix({
       merchantName: 'Thales Ogliari',
       merchantCity: 'SAO MIGUEL DO OESTE'.substr(0, 15),
