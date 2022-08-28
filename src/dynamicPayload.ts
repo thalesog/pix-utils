@@ -24,7 +24,7 @@ export type PIXFetchParams = {
 
 export default async function fetchPayload({
   url,
-  DPP = new Date().toISOString().substr(0, 10),
+  DPP = new Date().toISOString().substring(0, 10),
   codMun = 5300108,
 }: PIXFetchParams): Promise<PIXFetchResults | PixError> {
   const axiosOptions: AxiosRequestConfig = {

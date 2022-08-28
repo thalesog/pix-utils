@@ -10,21 +10,22 @@ import {
 import { toBase64 } from './utils/qrcodeGenerator';
 
 export function generatePixObject(elements: PixElements): PixObject {
+  const emvCode = createEmv(elements);
   switch (elements.type) {
     case PixElementType.STATIC:
       return {
         ...elements,
-        toBRCode: () => createEmv(elements),
-        toImage: () => toBase64(createEmv(elements)),
+        toBRCode: () => emvCode,
+        toImage: () => toBase64(emvCode),
       } as PixStaticObject;
 
     case PixElementType.DYNAMIC:
       return {
         ...elements,
-        toBRCode: () => createEmv(elements),
+        toBRCode: () => emvCode,
         fetchPayload: ({ DPP, codMun }) =>
           fetchPayload({ url: elements.url, DPP, codMun }),
-        toImage: () => toBase64(createEmv(elements)),
+        toImage: () => toBase64(emvCode),
       } as PixDynamicObject;
   }
 }
