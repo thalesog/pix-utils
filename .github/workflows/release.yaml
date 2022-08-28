@@ -1,4 +1,4 @@
-name: Runs All Unit tests
+name: Release
 
 on:
   push:
