@@ -1,4 +1,4 @@
-name: Runs All Unit tests
+name: Release
 
 on:
   push:
@@ -14,6 +14,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
+          persist-credentials: false
           fetch-depth: 0
 
       - name: Set up Node
@@ -29,3 +30,6 @@ jobs:
 
       - name: Run Semantic-Release
         run: yarn release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
