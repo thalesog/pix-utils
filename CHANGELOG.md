@@ -1,3 +1,10 @@
+## [2.3.3](https://github.com/thalesog/pix-utils/compare/v2.3.2...v2.3.3) (2022-08-28)
+
+
+### Bug Fixes
+
+* undefined txid length ([#12](https://github.com/thalesog/pix-utils/issues/12)) ([25b5624](https://github.com/thalesog/pix-utils/commit/25b562460e9a89aa0103e07670c2c202d0e8c803))
+
 ## [2.3.2](https://github.com/thalesog/pix-utils/compare/v2.3.1...v2.3.2) (2022-08-28)
 
 
