@@ -1,3 +1,10 @@
+# [2.3.0](https://github.com/thalesog/pix-utils/compare/v2.2.2...v2.3.0) (2022-08-28)
+
+
+### Features
+
+* throw if error fn ([#5](https://github.com/thalesog/pix-utils/issues/5)) ([5de222b](https://github.com/thalesog/pix-utils/commit/5de222b84217a1a21a55600957dbae6c2a442ea1))
+
 # Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
