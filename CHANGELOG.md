@@ -1,3 +1,10 @@
+## [2.3.2](https://github.com/thalesog/pix-utils/compare/v2.3.1...v2.3.2) (2022-08-28)
+
+
+### Bug Fixes
+
+* undefined throwIfError when object is ok ([#7](https://github.com/thalesog/pix-utils/issues/7)) ([1470770](https://github.com/thalesog/pix-utils/commit/14707708bcf7cb2cdca1e24a2f890c6c1ecb435f))
+
 ## [2.3.1](https://github.com/thalesog/pix-utils/compare/v2.3.0...v2.3.1) (2022-08-28)
 
 

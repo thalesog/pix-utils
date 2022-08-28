@@ -1,7 +1,7 @@
 {
   "license": "MIT",
   "name": "pix-utils",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "author": "Thales Ogliari",
   "description": "Set of tools to parse, generate and validate payments of Brazil Instant Payment System (Pix)",
   "keywords": [
