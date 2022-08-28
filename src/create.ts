@@ -61,7 +61,7 @@ export function createStaticPix(
       },
     };
 
-  if (params.txid.length > 25)
+  if (params.txid && params.txid.length > 25)
     return {
       error: true,
       message: 'txid character limit exceeded (> 25)',
