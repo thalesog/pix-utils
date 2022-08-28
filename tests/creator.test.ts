@@ -1,5 +1,5 @@
-import { createDynamicPix, createStaticPix, hasError } from '..';
-
+import { describe, expect, it } from 'vitest';
+import { createDynamicPix, createStaticPix, hasError } from '../src';
 import {
   DYNAMIC_TEST_EMV,
   STATIC_TEST_EMV,

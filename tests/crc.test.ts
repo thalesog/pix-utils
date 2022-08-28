@@ -1,5 +1,5 @@
-import { computeCRC } from '../crc';
-
+import { describe, expect, it } from 'vitest';
+import { computeCRC } from '../src/crc';
 import { DYNAMIC_TEST_EMV, STATIC_TEST_EMV } from './emvCodes';
 
 describe('CRC Calculator and Parser', () => {

@@ -1,12 +1,12 @@
-import { parsePix, PixDynamicObject, PixStaticObject } from '..';
-import { parseEmv } from '../emvHandler';
+import { describe, expect, it } from 'vitest';
+import { parsePix, PixDynamicObject, PixStaticObject } from '../src';
+import { parseEmv } from '../src/emvHandler';
 import {
   EmvMaiSchema,
   EmvMandatory,
   EmvSchema,
   ValidTags,
-} from '../types/pixEmvSchema';
-
+} from '../src/types/pixEmvSchema';
 import {
   DYNAMIC_TEST_EMV,
   STATIC_TEST_EMV,
