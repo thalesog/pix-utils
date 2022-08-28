@@ -1,20 +1,24 @@
 import { PIXFetchResults } from '../dynamicPayload';
-
+import { PixDynamicObject, PixStaticObject } from './pixElements';
 import { PixError } from './pixError';
 
-export type PixFnDefault = {
+export interface PixFnDefault {
   readonly toBRCode: () => string;
   readonly toImage: () => Promise<string>;
+}
+
+export interface PixStaticFn extends PixFnDefault {
+  readonly throwIfError: () => PixStaticObject;
+}
+
+type FetchPayloadParams = {
+  DPP: string;
+  codMun: number;
 };
 
-export type PixStaticFn = PixFnDefault;
-
-export type PixDynamicFn = PixFnDefault & {
-  readonly fetchPayload: ({
-    DPP,
-    codMun,
-  }: {
-    readonly DPP: string;
-    readonly codMun: number;
-  }) => Promise<PIXFetchResults | PixError>;
-};
+export interface PixDynamicFn extends PixFnDefault {
+  readonly fetchPayload: (
+    params: FetchPayloadParams
+  ) => Promise<PIXFetchResults | PixError>;
+  readonly throwIfError: () => PixDynamicObject;
+}

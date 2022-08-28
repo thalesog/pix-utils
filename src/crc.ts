@@ -1,5 +1,4 @@
 import { TextEncoder } from 'text-encoding';
-
 import numToHex from './utils/numToHex';
 
 const crcTable = [

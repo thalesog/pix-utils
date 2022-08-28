@@ -1,3 +1,31 @@
+## [2.3.3](https://github.com/thalesog/pix-utils/compare/v2.3.2...v2.3.3) (2022-08-28)
+
+
+### Bug Fixes
+
+* undefined txid length ([#12](https://github.com/thalesog/pix-utils/issues/12)) ([25b5624](https://github.com/thalesog/pix-utils/commit/25b562460e9a89aa0103e07670c2c202d0e8c803))
+
+## [2.3.2](https://github.com/thalesog/pix-utils/compare/v2.3.1...v2.3.2) (2022-08-28)
+
+
+### Bug Fixes
+
+* undefined throwIfError when object is ok ([#7](https://github.com/thalesog/pix-utils/issues/7)) ([1470770](https://github.com/thalesog/pix-utils/commit/14707708bcf7cb2cdca1e24a2f890c6c1ecb435f))
+
+## [2.3.1](https://github.com/thalesog/pix-utils/compare/v2.3.0...v2.3.1) (2022-08-28)
+
+
+### Bug Fixes
+
+* missing build step ([#6](https://github.com/thalesog/pix-utils/issues/6)) ([96d8296](https://github.com/thalesog/pix-utils/commit/96d829688167166d1c33060a77b40e2ed0515333))
+
+# [2.3.0](https://github.com/thalesog/pix-utils/compare/v2.2.2...v2.3.0) (2022-08-28)
+
+
+### Features
+
+* throw if error fn ([#5](https://github.com/thalesog/pix-utils/issues/5)) ([5de222b](https://github.com/thalesog/pix-utils/commit/5de222b84217a1a21a55600957dbae6c2a442ea1))
+
 # Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.

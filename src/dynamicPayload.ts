@@ -1,9 +1,8 @@
-import { Buffer } from 'buffer';
-
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-
+import { Buffer } from 'buffer';
 import { PIXPayload } from './types/pixDynamicPayload';
 import { PixError } from './types/pixError';
+import { generateErrorObject } from './utils/generateErrorObject';
 import zeroPad from './utils/zeroPad';
 
 export type PIXFetchResults = {
@@ -25,7 +24,7 @@ export type PIXFetchParams = {
 
 export default async function fetchPayload({
   url,
-  DPP = new Date().toISOString().substr(0, 10),
+  DPP = new Date().toISOString().substring(0, 10),
   codMun = 5300108,
 }: PIXFetchParams): Promise<PIXFetchResults | PixError> {
   const axiosOptions: AxiosRequestConfig = {
@@ -37,7 +36,7 @@ export default async function fetchPayload({
   return axios
     .get('https://' + url, axiosOptions)
     .then(({ data, status }: AxiosResponse) => {
-      if (status !== 200) return { error: true, message: 'Status != 200' };
+      if (status !== 200) return generateErrorObject('Status != 200');
       return data;
     })
     .then((jws: string) => {
@@ -55,7 +54,6 @@ export default async function fetchPayload({
       return pixFetch;
     })
     .catch((error) => {
-      console.error(error);
-      return { error: true, message: error.message };
+      return generateErrorObject(error.message);
     });
 }
