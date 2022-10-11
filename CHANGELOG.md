@@ -1,3 +1,10 @@
+# [2.4.0](https://github.com/thalesog/pix-utils/compare/v2.3.3...v2.4.0) (2022-10-11)
+
+
+### Features
+
+* merchantCity field normalized ([#17](https://github.com/thalesog/pix-utils/issues/17)) ([7f799a9](https://github.com/thalesog/pix-utils/commit/7f799a94f05867fd43d16a07972f75a7c8528644))
+
 ## [2.3.3](https://github.com/thalesog/pix-utils/compare/v2.3.2...v2.3.3) (2022-08-28)
 
 
