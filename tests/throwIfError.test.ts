@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createStaticPix } from '../src';
+import { createStaticPix, PixElementType } from '../src';
 
 describe('throwIfError', () => {
   it('should be able to return the correct object when no errors are detected', () => {
@@ -14,7 +14,10 @@ describe('throwIfError', () => {
 
     expect(staticPixFn).toEqual(
       expect.objectContaining({
-        ...staticPixFn,
+        type: PixElementType.STATIC,
+        transactionAmount: 10,
+        pixKey: 'nubank@thalesog.com',
+        infoAdicional: 'Pedido 123',
       })
     );
   });
