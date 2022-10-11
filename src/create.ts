@@ -1,5 +1,9 @@
 import { generatePixObject } from './assembler';
 import {
+  CreateDynamicPixParams,
+  CreateStaticPixParams,
+} from './types/pixCreate';
+import {
   DynamicPixEmvElements,
   PixDynamicObject,
   PixElementType,
@@ -7,26 +11,7 @@ import {
   StaticPixEmvElements,
 } from './types/pixElements';
 import { PixError } from './types/pixError';
-
-type CreateStaticPixParams = {
-  readonly merchantName: string;
-  readonly merchantCity: string;
-  readonly infoAdicional?: string;
-  readonly pixKey: string;
-  readonly pss?: string;
-  readonly txid?: string;
-  readonly transactionAmount: number;
-  readonly isTransactionUnique?: boolean;
-};
-
-type CreateDynamicPixParams = {
-  readonly merchantName: string;
-  readonly merchantCity: string;
-  readonly url: string;
-
-  // Enabled by default in this type of Pix
-  // readonly isUnique?: boolean;
-};
+import { generateErrorObject } from './utils/generateErrorObject';
 
 const defaultPixFields = {
   merchantCategoryCode: '0000',
@@ -44,31 +29,22 @@ export function createStaticPix(
   params: CreateStaticPixParams
 ): PixStaticObject | PixError {
   if (params.merchantName.length > 25)
-    return {
-      error: true,
-      message: 'merchantName character limit exceeded (> 25)',
-      throwIfError: () => {
-        throw new Error('merchantName character limit exceeded (> 25)');
-      },
-    };
-
-  if (params.merchantCity.length > 15)
-    return {
-      error: true,
-      message: 'merchantCity character limit exceeded (> 15)',
-      throwIfError: () => {
-        throw new Error('merchantCity character limit exceeded (> 15)');
-      },
-    };
+    return generateErrorObject('merchantName character limit exceeded (> 25)');
 
   if (params.txid && params.txid.length > 25)
-    return {
-      error: true,
-      message: 'txid character limit exceeded (> 25)',
-      throwIfError: () => {
-        throw new Error('txid character limit exceeded (> 25)');
-      },
-    };
+    return generateErrorObject('txid character limit exceeded (> 25)');
+
+  if (params.merchantCity === '')
+    return generateErrorObject('merchantCity is required');
+
+  if (params.merchantCity.length > 15)
+    return generateErrorObject('merchantCity character limit exceeded (> 15)');
+
+  params.merchantCity = params.merchantCity
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .substring(0, 15)
+    .toUpperCase();
 
   const elements = {
     type: PixElementType.STATIC,
@@ -83,28 +59,24 @@ export function createDynamicPix(
   params: CreateDynamicPixParams
 ): PixDynamicObject | PixError {
   if (params.merchantName.length > 25)
-    return {
-      error: true,
-      message: 'merchantName character limit exceeded (> 25)',
-      throwIfError: () => {
-        throw new Error('merchantName character limit exceeded (> 25)');
-      },
-    };
+    return generateErrorObject('merchantName character limit exceeded (> 25)');
+
+  if (params.merchantCity === '')
+    return generateErrorObject('merchantCity is required');
 
   if (params.merchantCity.length > 15)
-    return {
-      error: true,
-      message: 'merchantCity character limit exceeded (> 15)',
-      throwIfError: () => {
-        throw new Error('merchantCity character limit exceeded (> 15)');
-      },
-    };
+    return generateErrorObject('merchantCity character limit exceeded (> 15)');
+
+  params.merchantCity = params.merchantCity
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .substring(0, 15)
+    .toUpperCase();
 
   const elements = {
     type: PixElementType.DYNAMIC,
     ...defaultStaticFields,
     ...params,
-    merchantCity: params.merchantCity.substr(0, 15).toUpperCase(),
   } as DynamicPixEmvElements;
 
   return generatePixObject(elements) as PixDynamicObject;
