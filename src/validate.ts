@@ -2,7 +2,7 @@ import {
   PixDynamicObject,
   PixElements,
   PixElementType,
-  PixObject,
+  PixObjects,
   PixStaticObject,
 } from './types/pixElements';
 import { EmvMaiSchema, EmvSchema, ValidTags } from './types/pixEmvSchema';
@@ -38,7 +38,7 @@ export function isPix(
 }
 
 export function hasError(
-  pixElement: PixObject | PixError
+  pixElement: PixObjects | PixError
 ): pixElement is PixError {
   return !!(pixElement as PixError).error;
 }
@@ -50,13 +50,13 @@ export function hasElementError(
 }
 
 export function isStaticPix(
-  pixElement: PixObject
+  pixElement: PixObjects
 ): pixElement is PixStaticObject {
   return pixElement && pixElement.type === PixElementType.STATIC;
 }
 
 export function isDynamicPix(
-  pixElement: PixObject
+  pixElement: PixObjects
 ): pixElement is PixDynamicObject {
   return pixElement && pixElement.type === PixElementType.DYNAMIC;
 }
