@@ -40,12 +40,6 @@ export function createStaticPix(
   if (params.merchantCity.length > 15)
     return generateErrorObject('merchantCity character limit exceeded (> 15)');
 
-  params.merchantCity = params.merchantCity
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .substring(0, 15)
-    .toUpperCase();
-
   const elements = {
     type: PixElementType.STATIC,
     ...defaultStaticFields,
@@ -66,12 +60,6 @@ export function createDynamicPix(
 
   if (params.merchantCity.length > 15)
     return generateErrorObject('merchantCity character limit exceeded (> 15)');
-
-  params.merchantCity = params.merchantCity
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .substring(0, 15)
-    .toUpperCase();
 
   const elements = {
     type: PixElementType.DYNAMIC,
