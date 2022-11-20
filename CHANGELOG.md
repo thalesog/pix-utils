@@ -1,3 +1,10 @@
+## [2.4.1](https://github.com/thalesog/pix-utils/compare/v2.4.0...v2.4.1) (2022-11-20)
+
+
+### Bug Fixes
+
+* remove amount tag on no amount emv ([#19](https://github.com/thalesog/pix-utils/issues/19)) ([f90f98a](https://github.com/thalesog/pix-utils/commit/f90f98a2fe2378995202e7b2d96387dcadb778c2))
+
 # [2.4.0](https://github.com/thalesog/pix-utils/compare/v2.3.3...v2.4.0) (2022-10-11)
 
 
