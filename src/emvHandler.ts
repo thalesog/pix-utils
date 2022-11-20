@@ -4,8 +4,10 @@ import {
   EmvAdditionalDataSchema,
   EmvMaiSchema,
   EmvSchema,
+  ParsedTags,
+  TagsWithSubTags,
 } from './types/pixEmvSchema';
-import { ParsedTags, TagsWithSubTags } from './types/pixEmvSchema';
+import { normalizeCity, normalizeName } from './utils/textParser';
 import zeroPad from './utils/zeroPad';
 
 function generateEmvElement(elementId: number, value: string) {
@@ -36,54 +38,45 @@ function generateAdditionalData(txid: string) {
 }
 
 export function createEmv(elements: PixElements): string {
-  if (elements.type === PixElementType.STATIC) {
-    const generatedEmv = [
-      generateEmvElement(EmvSchema.TAG_INIT, '01'),
-      generateEmvElement(EmvSchema.TAG_ONETIME, elements.oneTime ? '12' : ''),
-      generateEmvElement(EmvSchema.TAG_MAI, generateMAI(elements)),
-      generateEmvElement(EmvSchema.TAG_MCC, elements.merchantCategoryCode),
-      generateEmvElement(
-        EmvSchema.TAG_TRANSACTION_CURRENCY,
-        elements.transactionCurrency
-      ),
-      generateEmvElement(
-        EmvSchema.TAG_TRANSACTION_AMOUNT,
-        elements.transactionAmount.toFixed(2)
-      ),
-      generateEmvElement(EmvSchema.TAG_COUNTRY_CODE, elements.countryCode),
-      generateEmvElement(EmvSchema.TAG_MERCHANT_NAME, elements.merchantName),
-      generateEmvElement(EmvSchema.TAG_MERCHANT_CITY, elements.merchantCity),
-      generateEmvElement(
-        EmvSchema.TAG_ADDITIONAL_DATA,
-        generateAdditionalData(elements.txid)
-      ),
-      generateEmvElement(EmvSchema.TAG_CRC, '0000'),
-    ].join('');
+  if (![PixElementType.STATIC, PixElementType.DYNAMIC].includes(elements.type))
+    return 'INVALID';
 
-    return generatedEmv.replace(/\w{4}$/, computeCRC(generatedEmv));
-  } else if (elements.type === PixElementType.DYNAMIC) {
-    const generatedEmv = [
-      generateEmvElement(EmvSchema.TAG_INIT, '01'),
-      generateEmvElement(EmvSchema.TAG_ONETIME, elements.oneTime ? '12' : ''),
-      generateEmvElement(EmvSchema.TAG_MAI, generateMAI(elements)),
-      generateEmvElement(EmvSchema.TAG_MCC, elements.merchantCategoryCode),
-      generateEmvElement(
-        EmvSchema.TAG_TRANSACTION_CURRENCY,
-        elements.transactionCurrency
-      ),
-      generateEmvElement(EmvSchema.TAG_COUNTRY_CODE, elements.countryCode),
-      generateEmvElement(EmvSchema.TAG_MERCHANT_NAME, elements.merchantName),
-      generateEmvElement(EmvSchema.TAG_MERCHANT_CITY, elements.merchantCity),
-      generateEmvElement(
-        EmvSchema.TAG_ADDITIONAL_DATA,
-        generateAdditionalData('')
-      ),
-      generateEmvElement(EmvSchema.TAG_CRC, '0000'),
-    ].join('');
-
-    return generatedEmv.replace(/\w{4}$/, computeCRC(generatedEmv));
-  }
-  return 'INVALID';
+  const emvElements = [
+    generateEmvElement(EmvSchema.TAG_INIT, '01'),
+    generateEmvElement(EmvSchema.TAG_ONETIME, elements.oneTime ? '12' : ''),
+    generateEmvElement(EmvSchema.TAG_MAI, generateMAI(elements)),
+    generateEmvElement(EmvSchema.TAG_MCC, elements.merchantCategoryCode),
+    generateEmvElement(
+      EmvSchema.TAG_TRANSACTION_CURRENCY,
+      elements.transactionCurrency
+    ),
+    elements.type === PixElementType.STATIC
+      ? generateEmvElement(
+          EmvSchema.TAG_TRANSACTION_AMOUNT,
+          elements.transactionAmount > 0
+            ? elements.transactionAmount.toFixed(2)
+            : ''
+        )
+      : '',
+    generateEmvElement(EmvSchema.TAG_COUNTRY_CODE, elements.countryCode),
+    generateEmvElement(
+      EmvSchema.TAG_MERCHANT_NAME,
+      normalizeName(elements.merchantName)
+    ),
+    generateEmvElement(
+      EmvSchema.TAG_MERCHANT_CITY,
+      normalizeCity(elements.merchantCity)
+    ),
+    generateEmvElement(
+      EmvSchema.TAG_ADDITIONAL_DATA,
+      generateAdditionalData(
+        elements.type === PixElementType.STATIC ? elements.txid : ''
+      )
+    ),
+    generateEmvElement(EmvSchema.TAG_CRC, '0000'),
+  ];
+  const generatedEmv = emvElements.join('');
+  return generatedEmv.replace(/\w{4}$/, computeCRC(generatedEmv));
 }
 
 export function parseEmv({

@@ -18,7 +18,7 @@ describe('EMV Data Extractor', () => {
     expect(parsedPix.merchantCategoryCode).toBe('0000');
     expect(parsedPix.transactionCurrency).toBe('986');
     expect(parsedPix.countryCode).toBe('BR');
-    expect(parsedPix.merchantName).toBe('Thales Ogliari');
+    expect(parsedPix.merchantName).toBe('THALES OGLIARI');
     expect(parsedPix.merchantCity).toBe('SAO MIGUEL DO O');
     expect(parsedPix.pixKey).toBe('thalesog@me.com');
   });
@@ -36,7 +36,7 @@ describe('EMV Data Extractor', () => {
     expect(parsedPix.merchantCategoryCode).toBe('0000');
     expect(parsedPix.transactionCurrency).toBe('986');
     expect(parsedPix.countryCode).toBe('BR');
-    expect(parsedPix.merchantName).toBe('Thales Ogliari');
+    expect(parsedPix.merchantName).toBe('THALES OGLIARI');
     expect(parsedPix.merchantCity).toBe('SAO MIGUEL DO O');
     expect(parsedPix.url).toBe(
       'payload.psp.com/3ec9d2f9-5f03-4e0e-820d-63a81e769e87'

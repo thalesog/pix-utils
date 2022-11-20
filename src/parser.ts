@@ -5,7 +5,7 @@ import {
   PixElements,
   PixElementType,
   PixEmvMandatoryElements,
-  PixObject,
+  PixObjects,
 } from './types/pixElements';
 import {
   EmvAdditionalDataSchema,
@@ -17,7 +17,7 @@ import { PixError } from './types/pixError';
 import { generateErrorObject } from './utils/generateErrorObject';
 import { hasElementError, isPix } from './validate';
 
-export function parsePix(brCode: string): PixObject | PixError {
+export function parsePix(brCode: string): PixObjects | PixError {
   // Parse EMV Code
   const emvElements = parseEmv({ emvCode: brCode });
   if (!emvElements.isValid) return generateErrorObject('invalid emv code');
@@ -32,7 +32,7 @@ export function parsePix(brCode: string): PixObject | PixError {
 
   if (hasElementError(elements)) return generateErrorObject(elements.message);
 
-  return generatePixObject(elements);
+  return generatePixObject(elements) as PixObjects;
 }
 
 export function extractMandatoryElements(

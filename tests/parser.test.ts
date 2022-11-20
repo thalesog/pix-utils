@@ -22,7 +22,7 @@ describe('EMV Parser', () => {
     expect(getTag(EmvMandatory.TAG_MCC)).toBe('0000');
     expect(getTag(EmvMandatory.TAG_TRANSACTION_CURRENCY)).toBe('986');
     expect(getTag(EmvMandatory.TAG_COUNTRY_CODE)).toBe('BR');
-    expect(getTag(EmvMandatory.TAG_MERCHANT_NAME)).toBe('Thales Ogliari');
+    expect(getTag(EmvMandatory.TAG_MERCHANT_NAME)).toBe('THALES OGLIARI');
     expect(getTag(EmvMandatory.TAG_MERCHANT_CITY)).toBe('SAO MIGUEL DO O');
   });
 
@@ -59,7 +59,7 @@ describe('EMV Parser', () => {
     expect(pix.merchantCategoryCode).toBe('0000');
     expect(pix.transactionCurrency).toBe('986');
     expect(pix.countryCode).toBe('BR');
-    expect(pix.merchantName).toBe('Thales Ogliari');
+    expect(pix.merchantName).toBe('THALES OGLIARI');
     expect(pix.merchantCity).toBe('SAO MIGUEL DO O');
     expect(pix.pixKey).toBe('thalesog@me.com');
     expect(pix.transactionAmount).toBe(10);
@@ -74,7 +74,7 @@ describe('EMV Parser', () => {
     expect(pix.merchantCategoryCode).toBe('0000');
     expect(pix.transactionCurrency).toBe('986');
     expect(pix.countryCode).toBe('BR');
-    expect(pix.merchantName).toBe('Thales Ogliari');
+    expect(pix.merchantName).toBe('THALES OGLIARI');
     expect(pix.merchantCity).toBe('SAO MIGUEL DO O');
     expect(pix.pixKey).toBe('thalesog@me.com');
     expect(pix.transactionAmount).toBe(0);
@@ -89,7 +89,7 @@ describe('EMV Parser', () => {
     expect(pix.merchantCategoryCode).toBe('0000');
     expect(pix.transactionCurrency).toBe('986');
     expect(pix.countryCode).toBe('BR');
-    expect(pix.merchantName).toBe('Thales Ogliari');
+    expect(pix.merchantName).toBe('THALES OGLIARI');
     expect(pix.merchantCity).toBe('SAO MIGUEL DO O');
     expect(pix.pixKey).toBe('thalesog@me.com');
     expect(pix.transactionAmount).toBe(0);
@@ -104,7 +104,7 @@ describe('EMV Parser', () => {
     expect(pix.merchantCategoryCode).toBe('0000');
     expect(pix.transactionCurrency).toBe('986');
     expect(pix.countryCode).toBe('BR');
-    expect(pix.merchantName).toBe('Thales Ogliari');
+    expect(pix.merchantName).toBe('THALES OGLIARI');
     expect(pix.merchantCity).toBe('SAO MIGUEL DO O');
     expect(pix.url).toBe(
       'payload.psp.com/3ec9d2f9-5f03-4e0e-820d-63a81e769e87'
