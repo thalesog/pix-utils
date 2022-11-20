@@ -21,9 +21,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: lts/*
+          cache: yarn
 
-      - name: Install dependencies (with cache)
-        uses: bahmutov/npm-install@HEAD
+      - name: Install dependencies
+        uses: yarn install --frozen-lockfile
 
       - name: Run Tests
         run: yarn test

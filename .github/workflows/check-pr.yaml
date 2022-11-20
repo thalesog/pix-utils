@@ -8,17 +8,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Use Node.js LTS
+      - name: Set up Node
         uses: actions/setup-node@v3
         with:
           node-version: lts/*
+          cache: yarn
 
-      - name: Install dependencies (with cache)
-        uses: bahmutov/npm-install@HEAD
+      - name: Install dependencies
+        uses: yarn install --frozen-lockfile
 
       - name: Check types
         run: yarn build
@@ -45,9 +47,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+          cache: yarn
 
-      - name: Install dependencies (with cache)
-        uses: bahmutov/npm-install@HEAD
+      - name: Install dependencies
+        uses: yarn install --frozen-lockfile
 
       - name: Run Tests
         run: yarn test
