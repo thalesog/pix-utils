@@ -1,3 +1,10 @@
+## [2.4.2](https://github.com/thalesog/pix-utils/compare/v2.4.1...v2.4.2) (2022-11-29)
+
+
+### Bug Fixes
+
+* added textencoding polyfill ([#20](https://github.com/thalesog/pix-utils/issues/20)) ([e2edea6](https://github.com/thalesog/pix-utils/commit/e2edea6f66a9a1749b2d24b2d90de36011481e42))
+
 ## [2.4.1](https://github.com/thalesog/pix-utils/compare/v2.4.0...v2.4.1) (2022-11-20)
 
 
