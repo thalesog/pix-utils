@@ -20,6 +20,7 @@ export enum EmvMaiSchema {
   TAG_MAI_GUI = 0,
   TAG_MAI_PIXKEY = 1,
   TAG_MAI_INFO_ADD = 2,
+  TAG_MAI_FSS = 3,
   TAG_MAI_URL = 25,
   BC_GUI = 'br.gov.bcb.pix',
 }

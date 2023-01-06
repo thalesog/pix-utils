@@ -5,6 +5,7 @@ import {
   DYNAMIC_TEST_NORMALIZED_NAME,
   STATIC_TEST_EMV,
   STATIC_TEST_NO_VALUE_EMV,
+  STATIC_TEST_NO_VALUE_WITHFSS_EMV,
 } from './emvCodes';
 
 describe('EMV Code Creation', () => {
@@ -53,6 +54,23 @@ describe('EMV Code Creation', () => {
     if (hasError(staticPixFn)) return;
 
     expect(staticPixFn.toBRCode()).toBe(STATIC_TEST_NO_VALUE_EMV);
+  });
+
+  it('should be able to create a static pix from mandatory fields with no amount defined and set fss', () => {
+    const staticPixFn = createStaticPix({
+      merchantName: 'Thales Ogliari',
+      merchantCity: 'SÃO MIGUÉL DO O',
+      pixKey: 'thalesog@me.com',
+      infoAdicional: 'Pedido 123',
+      fss: '12341234',
+      txid: '',
+      transactionAmount: 0,
+    });
+
+    expect(hasError(staticPixFn)).toBe(false);
+    if (hasError(staticPixFn)) return;
+
+    expect(staticPixFn.toBRCode()).toBe(STATIC_TEST_NO_VALUE_WITHFSS_EMV);
   });
 
   it('should be able to create a dynamic pix from mandatory fields', () => {

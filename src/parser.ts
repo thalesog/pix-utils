@@ -70,6 +70,7 @@ export function extractElements(
         EmvAdditionalDataSchema.TAG_TXID,
         EmvSchema.TAG_ADDITIONAL_DATA
       ),
+      fss: emvElements.getSubTag(EmvMaiSchema.TAG_MAI_FSS, EmvSchema.TAG_MAI),
     };
   }
   if (isPix(emvElements, 'dynamic')) {

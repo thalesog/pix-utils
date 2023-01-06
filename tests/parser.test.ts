@@ -12,6 +12,7 @@ import {
   STATIC_TEST_EMV,
   STATIC_TEST_NO_VALUE_ELEMENT_EMV,
   STATIC_TEST_NO_VALUE_EMV,
+  STATIC_TEST_WITH_FSS,
 } from './emvCodes';
 
 describe('EMV Parser', () => {
@@ -97,7 +98,7 @@ describe('EMV Parser', () => {
     expect(pix.txid).toBe('***');
   });
 
-  it('should be able to parse a static pix', () => {
+  it('should be able to parse a dynamic pix', () => {
     const pix = parsePix(DYNAMIC_TEST_EMV) as PixDynamicObject;
 
     expect(pix.type).toBe('DYNAMIC');
@@ -109,5 +110,17 @@ describe('EMV Parser', () => {
     expect(pix.url).toBe(
       'payload.psp.com/3ec9d2f9-5f03-4e0e-820d-63a81e769e87'
     );
+  });
+
+  it('should be able to parse a static pix with fss', () => {
+    const pix = parsePix(STATIC_TEST_WITH_FSS) as PixStaticObject;
+
+    expect(pix.type).toBe('STATIC');
+    expect(pix.merchantCategoryCode).toBe('0000');
+    expect(pix.transactionCurrency).toBe('986');
+    expect(pix.countryCode).toBe('BR');
+    expect(pix.merchantName).toBe('Pix');
+    expect(pix.merchantCity).toBe('BRASILIA');
+    expect(pix.fss).toBe('99999008');
   });
 });
