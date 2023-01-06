@@ -1,3 +1,10 @@
+# [2.5.0](https://github.com/thalesog/pix-utils/compare/v2.4.2...v2.5.0) (2023-01-06)
+
+
+### Features
+
+* added fss field for generating and parsing brCodes ([#21](https://github.com/thalesog/pix-utils/issues/21)) ([55216e2](https://github.com/thalesog/pix-utils/commit/55216e2a6270c2c40e971f88c78496a53fb61baa))
+
 ## [2.4.2](https://github.com/thalesog/pix-utils/compare/v2.4.1...v2.4.2) (2022-11-29)
 
 
