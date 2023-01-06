@@ -5,6 +5,7 @@ export type CreateStaticPixParams = {
   pixKey: string;
   pss?: string;
   txid?: string;
+  fss?: string;
   transactionAmount: number;
   isTransactionUnique?: boolean;
 };

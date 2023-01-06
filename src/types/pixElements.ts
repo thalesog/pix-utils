@@ -30,6 +30,7 @@ export interface StaticPixEmvElements extends PixEmvBasicElements {
   readonly pixKey: string;
   readonly txid?: string;
   readonly infoAdicional?: string;
+  readonly fss?: string;
 }
 
 export interface InvalidPixEmvElements {
