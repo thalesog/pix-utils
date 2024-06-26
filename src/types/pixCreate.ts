@@ -14,4 +14,5 @@ export type CreateDynamicPixParams = {
   merchantName: string;
   merchantCity: string;
   url: string;
+  oneTime?: boolean;
 };

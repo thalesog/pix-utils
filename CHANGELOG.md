@@ -1,3 +1,10 @@
+# [2.6.0](https://github.com/thalesog/pix-utils/compare/v2.5.0...v2.6.0) (2024-06-26)
+
+### Features
+
+* added the `oneTime` optional param when creating dynamic pix. If true, the "Point of Initiation Method" TAG will be added to the EMV.
+
+
 # [2.5.0](https://github.com/thalesog/pix-utils/compare/v2.4.2...v2.5.0) (2023-01-06)
 
 
