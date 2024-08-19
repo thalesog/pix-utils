@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { createDynamicPix, createStaticPix, hasError } from '../src';
 import {
+  DYNAMIC_ONE_TIME_TEST_EMV,
   DYNAMIC_TEST_EMV,
   DYNAMIC_TEST_NORMALIZED_NAME,
   STATIC_TEST_EMV,
@@ -110,5 +111,19 @@ describe('EMV Code Creation', () => {
     if (hasError(dynamicPixFn)) return;
 
     expect(dynamicPixFn.toBRCode()).toBe(DYNAMIC_TEST_NORMALIZED_NAME);
+  });
+
+  it('should be able to create a dynamic pix with one time tag', () => {
+    const dynamicPixFn = createDynamicPix({
+      merchantName: 'Thales Ogliari',
+      merchantCity: 'SÃO MIGUÉL DO O',
+      url: 'payload.psp.com/3ec9d2f9-5f03-4e0e-820d-63a81e769e87',
+      oneTime: true,
+    });
+
+    expect(hasError(dynamicPixFn)).toBe(false);
+    if (hasError(dynamicPixFn)) return;
+
+    expect(dynamicPixFn.toBRCode()).toBe(DYNAMIC_ONE_TIME_TEST_EMV);
   });
 });
