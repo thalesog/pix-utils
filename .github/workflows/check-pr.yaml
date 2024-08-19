@@ -6,51 +6,37 @@ on:
 jobs:
   check-pr:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Set up Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: lts/*
           cache: yarn
 
+      - name: Check commits messages
+        uses: wagoid/commitlint-github-action@v6
+
+      - name: Check PR name
+        uses: amannn/action-semantic-pull-request@v5
+
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Check types
-        run: yarn build
+      - name: Check formatting
+        run: yarn format
 
       - name: Check linting
         run: yarn lint
 
-      - name: Check commits messages
-        uses: wagoid/commitlint-github-action@v4
+      - name: Run build
+        run: yarn build
 
   tests:
-    runs-on: ubuntu-latest
-
     needs: check-pr
+    uses: ./.github/workflows/tests.yml
 
-    strategy:
-      matrix:
-        node-version: [14.x, 16.x, 18.x]
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: yarn
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: Run Tests
-        run: yarn test
