@@ -1,3 +1,10 @@
+# [2.6.0](https://github.com/thalesog/pix-utils/compare/v2.5.0...v2.6.0) (2024-08-19)
+
+
+### Features
+
+* expose `oneTime` option to add the `Point of Initiation Method` tag to the EMV ([#25](https://github.com/thalesog/pix-utils/issues/25)) ([b1d3db5](https://github.com/thalesog/pix-utils/commit/b1d3db5eebe0bde3d1b6ae802eaf0d548272e64e))
+
 # [2.5.0](https://github.com/thalesog/pix-utils/compare/v2.4.2...v2.5.0) (2023-01-06)
 
 
