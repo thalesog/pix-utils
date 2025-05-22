@@ -51,6 +51,7 @@ export function extractElements(
   emvElements: ValidTags
 ): PixElements | PixError {
   const basicElements = extractMandatoryElements(emvElements);
+  const isComposite = isPix(emvElements, 'composite');
   if (isPix(emvElements, 'static')) {
     const amountNumber = +emvElements.getTag(EmvSchema.TAG_TRANSACTION_AMOUNT);
     const transactionAmount = !isNaN(amountNumber) ? amountNumber : 0;
@@ -71,15 +72,47 @@ export function extractElements(
         EmvSchema.TAG_ADDITIONAL_DATA
       ),
       fss: emvElements.getSubTag(EmvMaiSchema.TAG_MAI_FSS, EmvSchema.TAG_MAI),
+      urlRec: isComposite
+        ? emvElements.getSubTag(
+            EmvMaiSchema.TAG_MAI_URL,
+            EmvSchema.TAG_UNRESERVED_TEMPLATE
+          )
+        : undefined,
     };
   }
+
   if (isPix(emvElements, 'dynamic')) {
+    if (isComposite) {
+      return {
+        type: PixElementType.COMPOSITE,
+        ...basicElements,
+        url: emvElements.getSubTag(EmvMaiSchema.TAG_MAI_URL, EmvSchema.TAG_MAI),
+        urlRec: emvElements.getSubTag(
+          EmvMaiSchema.TAG_MAI_URL,
+          EmvSchema.TAG_UNRESERVED_TEMPLATE
+        ),
+      };
+    }
+
     return {
       type: PixElementType.DYNAMIC,
       ...basicElements,
       url: emvElements.getSubTag(EmvMaiSchema.TAG_MAI_URL, EmvSchema.TAG_MAI),
+      urlRec: undefined,
     };
   }
+
+  if (isComposite) {
+    return {
+      type: PixElementType.COMPOSITE,
+      ...basicElements,
+      urlRec: emvElements.getSubTag(
+        EmvMaiSchema.TAG_MAI_URL,
+        EmvSchema.TAG_UNRESERVED_TEMPLATE
+      ),
+    };
+  }
+
   if (!isPix(emvElements, 'pix') || !isPix(emvElements, 'valid'))
     return generateErrorObject('invalid pix');
 

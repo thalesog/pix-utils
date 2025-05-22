@@ -76,7 +76,36 @@ export type PIXInstantPayload = {
   readonly status: PixDynamicStatus;
 };
 
-export type PIXPayload = PIXInstantPayload | PIXFuturePayload;
+export type PIXRecPayload = {
+  readonly ridRec: string;
+  readonly vinculo: {
+    readonly objeto: string;
+    readonly devedor: {
+      readonly cnpj: string;
+      readonly nome: string;
+    };
+    readonly contrato: string;
+  };
+  readonly calendario: {
+    readonly dataInicial: string;
+    readonly periodicidade: string;
+  };
+  readonly valor: {
+    readonly valorRec: string;
+  };
+  readonly recebedor: {
+    readonly ispbParticipante: string;
+    readonly cnpj: string;
+    readonly nome: string;
+  };
+  readonly politicaRetentativa: string;
+  readonly atualizacao: {
+    readonly status: string;
+    readonly data: string;
+  }[];
+};
+
+export type PIXPayload = PIXInstantPayload | PIXFuturePayload | PIXRecPayload;
 
 export const PayloadExample: PIXPayload = {
   txid: 'fc9a4366-ff3d-4964-b5db-c6c91a8722d3',

@@ -8,6 +8,8 @@ export enum EmvSchema {
   TAG_COUNTRY_CODE = 58,
   TAG_MERCHANT_NAME = 59,
   TAG_MERCHANT_CITY = 60,
+  TAG_POSTAL_CODE = 61,
+  TAG_UNRESERVED_TEMPLATE = 80,
   TAG_ADDITIONAL_DATA = 62,
   TAG_CRC = 63,
 }
@@ -31,12 +33,15 @@ export enum EmvMandatory {
   TAG_COUNTRY_CODE = EmvSchema.TAG_COUNTRY_CODE, //EL58
   TAG_MERCHANT_NAME = EmvSchema.TAG_MERCHANT_NAME, //EL59
   TAG_MERCHANT_CITY = EmvSchema.TAG_MERCHANT_CITY, //EL60
+  TAG_POSTAL_CODE = EmvSchema.TAG_POSTAL_CODE, //EL61
 }
 
 export enum TagsWithSubTags {
-  TAG_MAI = EmvSchema.TAG_MAI,
-  TAG_ADDITIONAL_DATA = EmvSchema.TAG_ADDITIONAL_DATA,
+  TAG_MAI = EmvSchema.TAG_MAI, //EL26
+  TAG_ADDITIONAL_DATA = EmvSchema.TAG_ADDITIONAL_DATA, //EL62
+  TAG_UT = EmvSchema.TAG_UNRESERVED_TEMPLATE, //EL80
 }
+
 export type ValidTags = {
   readonly isValid: true;
   readonly [key: number]: {

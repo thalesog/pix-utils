@@ -25,7 +25,10 @@ function generateMAI(elements: PixElements): string {
       generateEmvElement(EmvMaiSchema.TAG_MAI_INFO_ADD, elements.infoAdicional),
       generateEmvElement(EmvMaiSchema.TAG_MAI_FSS, elements.fss),
     ].join('');
-  } else if (elements.type === PixElementType.DYNAMIC) {
+  } else if (
+    elements.type === PixElementType.DYNAMIC ||
+    elements.type === PixElementType.COMPOSITE
+  ) {
     return [
       generateEmvElement(EmvMaiSchema.TAG_MAI_GUI, EmvMaiSchema.BC_GUI),
       generateEmvElement(EmvMaiSchema.TAG_MAI_URL, elements.url),
@@ -39,7 +42,13 @@ function generateAdditionalData(txid: string) {
 }
 
 export function createEmv(elements: PixElements): string {
-  if (![PixElementType.STATIC, PixElementType.DYNAMIC].includes(elements.type))
+  if (
+    ![
+      PixElementType.STATIC,
+      PixElementType.DYNAMIC,
+      PixElementType.COMPOSITE,
+    ].includes(elements.type)
+  )
     return 'INVALID';
 
   const emvElements = [
@@ -68,12 +77,22 @@ export function createEmv(elements: PixElements): string {
       EmvSchema.TAG_MERCHANT_CITY,
       normalizeCity(elements.merchantCity)
     ),
+
     generateEmvElement(
       EmvSchema.TAG_ADDITIONAL_DATA,
       generateAdditionalData(
         elements.type === PixElementType.STATIC ? elements.txid : ''
       )
     ),
+    elements.urlRec
+      ? generateEmvElement(
+          EmvSchema.TAG_UNRESERVED_TEMPLATE,
+          [
+            generateEmvElement(EmvMaiSchema.TAG_MAI_GUI, EmvMaiSchema.BC_GUI),
+            generateEmvElement(EmvMaiSchema.TAG_MAI_URL, elements.urlRec),
+          ].join('')
+        )
+      : '',
     generateEmvElement(EmvSchema.TAG_CRC, '0000'),
   ];
   const generatedEmv = emvElements.join('');
