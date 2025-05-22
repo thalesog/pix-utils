@@ -38,7 +38,7 @@
     "coverage": "vitest --coverage",
     "reset-hard": "git clean -dfx && git reset --hard && yarn install",
     "prepare-release": "run-s reset-hard test",
-    "prepare": "husky",
+    "prepare": "husky || true",
     "release": "semantic-release"
   },
   "dependencies": {

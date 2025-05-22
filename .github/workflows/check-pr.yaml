@@ -5,6 +5,7 @@ on:
 
 jobs:
   check-pr:
+    needs: tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -37,6 +38,4 @@ jobs:
         run: yarn build
 
   tests:
-    needs: check-pr
-    uses: ./.github/workflows/tests.yml
-
+    uses: ./.github/workflows/tests.yaml
