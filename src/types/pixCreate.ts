@@ -8,11 +8,21 @@ export type CreateStaticPixParams = {
   fss?: string;
   transactionAmount: number;
   isTransactionUnique?: boolean;
+  urlRec?: string;
 };
 
 export type CreateDynamicPixParams = {
   merchantName: string;
   merchantCity: string;
+  oneTime?: boolean;
   url: string;
   oneTime?: boolean;
+};
+
+export type CreateCompositePixParams = {
+  merchantName: string;
+  merchantCity: string;
+  oneTime?: boolean;
+  url?: string;
+  urlRec: string;
 };

@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Buffer } from 'buffer';
-import { PIXPayload } from './types/pixDynamicPayload';
+import { PIXPayload, PIXRecPayload } from './types/pixDynamicPayload';
 import { PixError } from './types/pixError';
 import { generateErrorObject } from './utils/generateErrorObject';
 import zeroPad from './utils/zeroPad';
@@ -50,6 +50,34 @@ export default async function fetchPayload({
         },
         header: JSON.parse(parts[0].toString()),
         payload: JSON.parse(parts[1].toString()) as PIXPayload,
+      };
+      return pixFetch;
+    })
+    .catch((error) => {
+      return generateErrorObject(error.message);
+    });
+}
+
+export async function fetchRecPayload({
+  url,
+}: PIXFetchParams): Promise<PIXFetchResults | PixError> {
+  return axios
+    .get('https://' + url)
+    .then(({ data, status }: AxiosResponse) => {
+      if (status !== 200) return generateErrorObject('Status != 200');
+      return data;
+    })
+    .then((jws: string) => {
+      const parts = jws.split('.').map((b64) => Buffer.from(b64, 'base64'));
+      const pixFetch: PIXFetchResults = {
+        jwsString: jws,
+        jws: {
+          hdr: parts[0],
+          payload: parts[1],
+          signature: parts[2],
+        },
+        header: JSON.parse(parts[0].toString()),
+        payload: JSON.parse(parts[1].toString()) as PIXRecPayload,
       };
       return pixFetch;
     })

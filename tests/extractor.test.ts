@@ -1,7 +1,16 @@
 import { describe, expect, it } from 'vitest';
 import { parsePix, PixElementType } from '../src';
-import { hasError, isDynamicPix, isStaticPix } from '../src/validate';
-import { DYNAMIC_TEST_EMV, STATIC_TEST_EMV } from './emvCodes';
+import {
+  hasError,
+  isCompositePix,
+  isDynamicPix,
+  isStaticPix,
+} from '../src/validate';
+import {
+  COMPOSITE_DYNAMIC_UNRESERVED_EMV,
+  DYNAMIC_TEST_EMV,
+  STATIC_TEST_EMV,
+} from './emvCodes';
 
 describe('EMV Data Extractor', () => {
   it('should be able to extract basic elements from a static pix', () => {
@@ -21,6 +30,7 @@ describe('EMV Data Extractor', () => {
     expect(parsedPix.merchantName).toBe('THALES OGLIARI');
     expect(parsedPix.merchantCity).toBe('SAO MIGUEL DO O');
     expect(parsedPix.pixKey).toBe('thalesog@me.com');
+    expect(parsedPix.urlRec).toBe(undefined);
   });
 
   it('should be able to extract basic elements from a dynamic pix', () => {
@@ -40,6 +50,30 @@ describe('EMV Data Extractor', () => {
     expect(parsedPix.merchantCity).toBe('SAO MIGUEL DO O');
     expect(parsedPix.url).toBe(
       'payload.psp.com/3ec9d2f9-5f03-4e0e-820d-63a81e769e87'
+    );
+    expect(parsedPix.urlRec).toBe(undefined);
+  });
+
+  it('should be able to extract basic elements from a dynamic pix', () => {
+    const parsedPix = parsePix(COMPOSITE_DYNAMIC_UNRESERVED_EMV);
+
+    expect(hasError(parsedPix)).toBe(false);
+    if (hasError(parsedPix)) return;
+
+    expect(isCompositePix(parsedPix)).toBe(true);
+    if (!isCompositePix(parsedPix)) return;
+
+    expect(parsedPix.type).toBe(PixElementType.COMPOSITE);
+    expect(parsedPix.merchantCategoryCode).toBe('0000');
+    expect(parsedPix.transactionCurrency).toBe('986');
+    expect(parsedPix.countryCode).toBe('BR');
+    expect(parsedPix.merchantName).toBe('FULANO DE TAL');
+    expect(parsedPix.merchantCity).toBe('BRASILIA');
+    expect(parsedPix.url).toBe(
+      'qr-h.sandbox.pix.bcb.gov.br/rest/api/v2/7b2d64c4eb744a2d92a4dd5f8cfc4dfa'
+    );
+    expect(parsedPix.urlRec).toBe(
+      'qr-h.sandbox.pix.bcb.gov.br/rest/api/rec/3d29b94249c54b3f8c533d729f59b5e5'
     );
   });
 });
