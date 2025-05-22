@@ -1,3 +1,15 @@
+# [2.7.0](https://github.com/thalesog/pix-utils/compare/v2.6.0...v2.7.0) (2025-05-22)
+
+
+### Bug Fixes
+
+* **ci:** correct test workflow file extension ([#33](https://github.com/thalesog/pix-utils/issues/33)) ([68bc907](https://github.com/thalesog/pix-utils/commit/68bc9078b016b06ca4ae463852b8946065029229))
+
+
+### Features
+
+* add funcionality for composite emv ([#32](https://github.com/thalesog/pix-utils/issues/32)) ([94d9587](https://github.com/thalesog/pix-utils/commit/94d9587019644739776ec880628ebb963caa3580))
+
 # [2.6.0](https://github.com/thalesog/pix-utils/compare/v2.5.0...v2.6.0) (2024-08-19)
 
 
