@@ -22,6 +22,21 @@ export type PIXFetchParams = {
   readonly codMun?: number;
 };
 
+export type PIXRecFetchResults = {
+  readonly jwsString: string;
+  readonly jws: {
+    readonly hdr: Uint8Array;
+    readonly payload: Uint8Array;
+    readonly signature: Uint8Array;
+  };
+  readonly header: Record<string, unknown>;
+  readonly payload: PIXRecPayload;
+};
+
+export type PIXRecFetchParams = {
+  readonly url: string;
+};
+
 export async function fetchPayload({
   url,
   DPP = new Date().toISOString().substring(0, 10),
@@ -34,7 +49,7 @@ export async function fetchPayload({
     },
   };
   return axios
-    .get('https://' + url, axiosOptions)
+    .get(`https://${url}`, axiosOptions)
     .then(({ data, status }: AxiosResponse) => {
       if (status !== 200) return generateErrorObject('Status != 200');
       return data;
@@ -60,16 +75,16 @@ export async function fetchPayload({
 
 export async function fetchRecPayload({
   url,
-}: PIXFetchParams): Promise<PIXFetchResults | PixError> {
+}: PIXRecFetchParams): Promise<PIXRecFetchResults | PixError> {
   return axios
-    .get('https://' + url)
+    .get(`https://${url}`)
     .then(({ data, status }: AxiosResponse) => {
       if (status !== 200) return generateErrorObject('Status != 200');
       return data;
     })
     .then((jws: string) => {
       const parts = jws.split('.').map((b64) => Buffer.from(b64, 'base64'));
-      const pixFetch: PIXFetchResults = {
+      const pixFetch: PIXRecFetchResults = {
         jwsString: jws,
         jws: {
           hdr: parts[0],

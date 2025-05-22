@@ -14,7 +14,6 @@ export type CreateStaticPixParams = {
 export type CreateDynamicPixParams = {
   merchantName: string;
   merchantCity: string;
-  oneTime?: boolean;
   url: string;
   oneTime?: boolean;
 };
