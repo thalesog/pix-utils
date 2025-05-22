@@ -38,5 +38,4 @@ jobs:
 
   tests:
     needs: check-pr
-    uses: ./.github/workflows/tests.yml
-
+    uses: ./.github/workflows/tests.yaml
