@@ -22,7 +22,7 @@ export type PIXFetchParams = {
   readonly codMun?: number;
 };
 
-export default async function fetchPayload({
+export async function fetchPayload({
   url,
   DPP = new Date().toISOString().substring(0, 10),
   codMun = 5300108,

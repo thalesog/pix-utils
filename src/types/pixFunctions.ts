@@ -13,7 +13,7 @@ export interface PixFnDefault {
 
 export interface PixStaticFn extends PixFnDefault {
   readonly throwIfError: () => PixStaticObject;
-  readonly fetchPayloadRec?: () => Promise<PIXFetchResults | PixError>;
+  readonly fetchRecPayload?: () => Promise<PIXFetchResults | PixError>;
 }
 
 type FetchPayloadParams = {
@@ -32,6 +32,6 @@ export interface PixCompositeFn extends PixFnDefault {
   readonly fetchPayload?: (
     params: FetchPayloadParams
   ) => Promise<PIXFetchResults | PixError>;
-  readonly fetchPayloadRec: () => Promise<PIXFetchResults | PixError>;
+  readonly fetchRecPayload: () => Promise<PIXFetchResults | PixError>;
   readonly throwIfError: () => PixCompositeObject;
 }

@@ -1,4 +1,4 @@
-import fetchPayload, { fetchRecPayload } from './dynamicPayload';
+import { fetchPayload, fetchRecPayload } from './dynamicPayload';
 import { createEmv } from './emvHandler';
 import { PixElement, PixElementType, PixObject } from './types/pixElements';
 import { toBase64 } from './utils/qrcodeGenerator';
@@ -27,7 +27,7 @@ export function generatePixObject<T extends PixElementType>(
     toImage: () => toBase64(emvCode),
     ...(elements.type === PixElementType.STATIC && elements.urlRec
       ? {
-          fetchPayloadRec: () => fetchRecPayload({ url: elements.urlRec }),
+          fetchRecPayload: () => fetchRecPayload({ url: elements.urlRec }),
         }
       : {}),
     ...(elements.type === PixElementType.DYNAMIC
@@ -42,7 +42,7 @@ export function generatePixObject<T extends PixElementType>(
             ? ({ DPP, codMun }) =>
                 fetchPayload({ url: elements.url, DPP, codMun })
             : undefined,
-          fetchPayloadRec: () => fetchRecPayload({ url: elements.urlRec }),
+          fetchRecPayload: () => fetchRecPayload({ url: elements.urlRec }),
         }
       : {}),
   };
