@@ -1,4 +1,5 @@
 import {
+  PixCompositeObject,
   PixDynamicObject,
   PixElements,
   PixElementType,
@@ -70,6 +71,6 @@ export function isDynamicPix(
 
 export function isCompositePix(
   pixElement: PixObjects
-): pixElement is PixDynamicObject {
+): pixElement is PixCompositeObject {
   return pixElement && pixElement.type === PixElementType.COMPOSITE;
 }
