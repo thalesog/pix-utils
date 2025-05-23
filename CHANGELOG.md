@@ -1,3 +1,10 @@
+## [2.7.1](https://github.com/thalesog/pix-utils/compare/v2.7.0...v2.7.1) (2025-05-23)
+
+
+### Bug Fixes
+
+* add new enums and types for Pix payload structure ([#34](https://github.com/thalesog/pix-utils/issues/34)) ([081e586](https://github.com/thalesog/pix-utils/commit/081e5867be9ac9e203429eb98919db760a6aeaa8))
+
 # [2.7.0](https://github.com/thalesog/pix-utils/compare/v2.6.0...v2.7.0) (2025-05-22)
 
 
