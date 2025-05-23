@@ -5,6 +5,38 @@ export enum PixDynamicStatus {
   REMOVIDA_PELO_PSP = 'REMOVIDA_PELO_PSP',
 }
 
+export enum Periodicidade {
+  SEMANAL = 'SEMANAL',
+  MENSAL = 'MENSAL',
+  TRIMESTRAL = 'TRIMESTRAL',
+  SEMESTRAL = 'SEMESTRAL',
+  ANUAL = 'ANUAL',
+}
+
+export enum PoliticaRetentativa {
+  NAO_PERMITE = 'NAO_PERMITE',
+  PERMITE_3R_7D = 'PERMITE_3R_7D',
+}
+
+export enum StatusRec {
+  CRIADA = 'CRIADA',
+  APROVADA = 'APROVADA',
+  REJEITADA = 'REJEITADA',
+  EXPIRADA = 'EXPIRADA',
+  CANCELADA = 'CANCELADA',
+}
+
+export enum ModalidadeAgente {
+  AGTEC = 'AGTEC',
+  AGTOT = 'AGTOT',
+  AGPSS = 'AGPSS',
+}
+
+export enum ModalidadeAgenteTroco {
+  AGTEC = 'AGTEC',
+  AGTOT = 'AGTOT',
+}
+
 type InfoAdicional = {
   readonly nome: string;
   readonly valor: string;
@@ -15,6 +47,37 @@ export type PIXPaylodParams = {
   readonly codMun?: string;
 };
 
+export type DevedorPF = {
+  readonly cpf: string;
+  readonly nome: string;
+};
+
+export type DevedorPJ = {
+  readonly cnpj: string;
+  readonly nome: string;
+};
+
+export type Devedor = DevedorPF | DevedorPJ;
+
+export type RetiradaSaque = {
+  readonly valor: string;
+  readonly modalidadeAlteracao?: 0 | 1;
+  readonly modalidadeAgente: ModalidadeAgente;
+  readonly prestadorDoServicoDeSaque: string;
+};
+
+export type RetiradaTroco = {
+  readonly valor: string;
+  readonly modalidadeAlteracao?: 0 | 1;
+  readonly modalidadeAgente: ModalidadeAgenteTroco;
+  readonly prestadorDoServicoDeSaque: string;
+};
+
+export type Retirada = {
+  readonly saque?: RetiradaSaque;
+  readonly troco?: RetiradaTroco;
+};
+
 export type PIXFuturePayload = {
   readonly revisao: number;
   readonly calendario: {
@@ -23,15 +86,12 @@ export type PIXFuturePayload = {
     readonly dataDeVencimento?: string;
     readonly validadeAposVencimento?: number;
   };
-  readonly devedor?: {
-    readonly cpf?: string;
-    readonly cnpj?: string;
-    readonly nome?: string;
-  };
+  readonly devedor?: Devedor;
   readonly recebedor?: {
     readonly cpf?: string;
     readonly cnpj?: string;
     readonly nome: string;
+    readonly nomeFantasia?: string;
     readonly logradouro: string;
     readonly cidade: string;
     readonly utf: string;
@@ -59,15 +119,11 @@ export type PIXInstantPayload = {
     readonly apresentacao: string;
     readonly expiracao: number;
   };
-  readonly devedor?: {
-    readonly cpf?: string;
-    readonly cnpj?: string;
-    readonly nome: string;
-  };
+  readonly devedor?: Devedor;
   readonly valor: {
     readonly original: string;
     readonly modalidadeAlteracao?: 0 | 1;
-    // TODO: Missing retirada object
+    readonly retirada?: Retirada;
   };
   readonly chave: string;
   readonly txid: string;
@@ -77,55 +133,31 @@ export type PIXInstantPayload = {
 };
 
 export type PIXRecPayload = {
-  readonly ridRec: string;
+  readonly idRec: string;
   readonly vinculo: {
     readonly objeto: string;
-    readonly devedor: {
-      readonly cnpj: string;
-      readonly nome: string;
-    };
+    readonly devedor: Devedor;
     readonly contrato: string;
   };
   readonly calendario: {
     readonly dataInicial: string;
-    readonly periodicidade: string;
+    readonly dataFinal?: string;
+    readonly periodicidade: Periodicidade;
   };
-  readonly valor: {
+  readonly valor?: {
     readonly valorRec: string;
+    readonly valorMinimoRecebedor?: string;
   };
   readonly recebedor: {
     readonly ispbParticipante: string;
     readonly cnpj: string;
     readonly nome: string;
   };
-  readonly politicaRetentativa: string;
+  readonly politicaRetentativa: PoliticaRetentativa;
   readonly atualizacao: {
-    readonly status: string;
+    readonly status: StatusRec;
     readonly data: string;
   }[];
 };
 
 export type PIXPayload = PIXInstantPayload | PIXFuturePayload | PIXRecPayload;
-
-export const PayloadExample: PIXPayload = {
-  txid: 'fc9a4366-ff3d-4964-b5db-c6c91a8722d3',
-  revisao: 3,
-  calendario: {
-    criacao: '2020-09-15T19:39:54.013Z',
-    apresentacao: '2020-04-01T18:00:00Z',
-    expiracao: 3600,
-  },
-  status: PixDynamicStatus.ATIVA,
-
-  valor: {
-    original: '500.00',
-    final: '500.00',
-    modalidadeAlteracao: 0,
-  },
-
-  chave: '7407c9c8-f78b-11ea-adc1-0242ac120002',
-
-  solicitacaoPagador: 'Informar cartão fidelidade',
-
-  infoAdicionais: [{ nome: 'quantidade', valor: '2' }],
-};
