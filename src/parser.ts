@@ -51,7 +51,7 @@ export function extractElements(
   emvElements: ValidTags
 ): PixElements | PixError {
   const basicElements = extractMandatoryElements(emvElements);
-  const isComposite = isPix(emvElements, 'composite');
+  const isRecurrence = isPix(emvElements, 'recurrence');
   if (isPix(emvElements, 'static')) {
     const amountNumber = +emvElements.getTag(EmvSchema.TAG_TRANSACTION_AMOUNT);
     const transactionAmount = !isNaN(amountNumber) ? amountNumber : 0;
@@ -72,7 +72,7 @@ export function extractElements(
         EmvSchema.TAG_ADDITIONAL_DATA
       ),
       fss: emvElements.getSubTag(EmvMaiSchema.TAG_MAI_FSS, EmvSchema.TAG_MAI),
-      urlRec: isComposite
+      urlRec: isRecurrence
         ? emvElements.getSubTag(
             EmvMaiSchema.TAG_MAI_URL,
             EmvSchema.TAG_UNRESERVED_TEMPLATE
@@ -82,30 +82,24 @@ export function extractElements(
   }
 
   if (isPix(emvElements, 'dynamic')) {
-    if (isComposite) {
-      return {
-        type: PixElementType.COMPOSITE,
-        ...basicElements,
-        url: emvElements.getSubTag(EmvMaiSchema.TAG_MAI_URL, EmvSchema.TAG_MAI),
-        urlRec: emvElements.getSubTag(
-          EmvMaiSchema.TAG_MAI_URL,
-          EmvSchema.TAG_UNRESERVED_TEMPLATE
-        ),
-      };
-    }
-
     return {
       type: PixElementType.DYNAMIC,
       ...basicElements,
       url: emvElements.getSubTag(EmvMaiSchema.TAG_MAI_URL, EmvSchema.TAG_MAI),
-      urlRec: undefined,
+      urlRec: isRecurrence
+        ? emvElements.getSubTag(
+            EmvMaiSchema.TAG_MAI_URL,
+            EmvSchema.TAG_UNRESERVED_TEMPLATE
+          )
+        : undefined,
     };
   }
 
-  if (isComposite) {
+  if (isRecurrence) {
     return {
-      type: PixElementType.COMPOSITE,
+      type: PixElementType.RECURRENCE,
       ...basicElements,
+      url: undefined,
       urlRec: emvElements.getSubTag(
         EmvMaiSchema.TAG_MAI_URL,
         EmvSchema.TAG_UNRESERVED_TEMPLATE

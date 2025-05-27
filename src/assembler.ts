@@ -34,14 +34,11 @@ export function generatePixObject<T extends PixElementType>(
       ? {
           fetchPayload: ({ DPP, codMun }) =>
             fetchPayload({ url: elements.url, DPP, codMun }),
+          fetchRecPayload: () => fetchRecPayload({ url: elements.urlRec }),
         }
       : {}),
-    ...(elements.type === PixElementType.COMPOSITE
+    ...(elements.type === PixElementType.RECURRENCE
       ? {
-          fetchPayload: elements.url
-            ? ({ DPP, codMun }) =>
-                fetchPayload({ url: elements.url, DPP, codMun })
-            : undefined,
           fetchRecPayload: () => fetchRecPayload({ url: elements.urlRec }),
         }
       : {}),

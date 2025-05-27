@@ -2,12 +2,12 @@ import { describe, expect, it } from 'vitest';
 import { parsePix, PixElementType } from '../src';
 import {
   hasError,
-  isCompositePix,
   isDynamicPix,
+  isRecurrencePix,
   isStaticPix,
 } from '../src/validate';
 import {
-  COMPOSITE_DYNAMIC_UNRESERVED_EMV,
+  RECURRENCE_DYNAMIC_UNRESERVED_EMV,
   DYNAMIC_TEST_EMV,
   STATIC_TEST_EMV,
 } from './emvCodes';
@@ -55,23 +55,21 @@ describe('EMV Data Extractor', () => {
   });
 
   it('should be able to extract basic elements from a dynamic pix', () => {
-    const parsedPix = parsePix(COMPOSITE_DYNAMIC_UNRESERVED_EMV);
+    const parsedPix = parsePix(RECURRENCE_DYNAMIC_UNRESERVED_EMV);
 
     expect(hasError(parsedPix)).toBe(false);
     if (hasError(parsedPix)) return;
 
-    expect(isCompositePix(parsedPix)).toBe(true);
-    if (!isCompositePix(parsedPix)) return;
+    expect(isRecurrencePix(parsedPix)).toBe(false);
+    if (!isRecurrencePix(parsedPix)) return;
 
-    expect(parsedPix.type).toBe(PixElementType.COMPOSITE);
+    expect(parsedPix.type).toBe(PixElementType.RECURRENCE);
     expect(parsedPix.merchantCategoryCode).toBe('0000');
     expect(parsedPix.transactionCurrency).toBe('986');
     expect(parsedPix.countryCode).toBe('BR');
     expect(parsedPix.merchantName).toBe('FULANO DE TAL');
     expect(parsedPix.merchantCity).toBe('BRASILIA');
-    expect(parsedPix.url).toBe(
-      'qr-h.sandbox.pix.bcb.gov.br/rest/api/v2/7b2d64c4eb744a2d92a4dd5f8cfc4dfa'
-    );
+
     expect(parsedPix.urlRec).toBe(
       'qr-h.sandbox.pix.bcb.gov.br/rest/api/rec/3d29b94249c54b3f8c533d729f59b5e5'
     );

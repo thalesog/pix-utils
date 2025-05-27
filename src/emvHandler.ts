@@ -27,7 +27,7 @@ function generateMAI(elements: PixElements): string {
     ].join('');
   } else if (
     elements.type === PixElementType.DYNAMIC ||
-    elements.type === PixElementType.COMPOSITE
+    elements.type === PixElementType.RECURRENCE
   ) {
     return [
       generateEmvElement(EmvMaiSchema.TAG_MAI_GUI, EmvMaiSchema.BC_GUI),
@@ -46,7 +46,7 @@ export function createEmv(elements: PixElements): string {
     ![
       PixElementType.STATIC,
       PixElementType.DYNAMIC,
-      PixElementType.COMPOSITE,
+      PixElementType.RECURRENCE,
     ].includes(elements.type)
   )
     return 'INVALID';

@@ -1,7 +1,7 @@
 import { PIXFetchResults } from '../dynamicPayload';
 import {
-  PixCompositeObject,
   PixDynamicObject,
+  PixRecurrenceObject,
   PixStaticObject,
 } from './pixElements';
 import { PixError } from './pixError';
@@ -25,13 +25,11 @@ export interface PixDynamicFn extends PixFnDefault {
   readonly fetchPayload: (
     params: FetchPayloadParams
   ) => Promise<PIXFetchResults | PixError>;
+  readonly fetchRecPayload?: () => Promise<PIXFetchResults | PixError>;
   readonly throwIfError: () => PixDynamicObject;
 }
 
-export interface PixCompositeFn extends PixFnDefault {
-  readonly fetchPayload?: (
-    params: FetchPayloadParams
-  ) => Promise<PIXFetchResults | PixError>;
+export interface PixRecurrenceFn extends PixFnDefault {
   readonly fetchRecPayload: () => Promise<PIXFetchResults | PixError>;
-  readonly throwIfError: () => PixCompositeObject;
+  readonly throwIfError: () => PixRecurrenceObject;
 }
