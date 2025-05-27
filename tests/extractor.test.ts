@@ -1,11 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { parsePix, PixElementType } from '../src';
-import {
-  hasError,
-  isDynamicPix,
-  isRecurrencePix,
-  isStaticPix,
-} from '../src/validate';
+import { hasError, isDynamicPix, isStaticPix } from '../src/validate';
 import {
   RECURRENCE_DYNAMIC_UNRESERVED_EMV,
   DYNAMIC_TEST_EMV,
