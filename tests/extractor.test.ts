@@ -60,10 +60,10 @@ describe('EMV Data Extractor', () => {
     expect(hasError(parsedPix)).toBe(false);
     if (hasError(parsedPix)) return;
 
-    expect(isRecurrencePix(parsedPix)).toBe(false);
-    if (!isRecurrencePix(parsedPix)) return;
+    expect(isDynamicPix(parsedPix)).toBe(true);
+    if (!isDynamicPix(parsedPix)) return;
 
-    expect(parsedPix.type).toBe(PixElementType.RECURRENCE);
+    expect(parsedPix.type).toBe(PixElementType.DYNAMIC);
     expect(parsedPix.merchantCategoryCode).toBe('0000');
     expect(parsedPix.transactionCurrency).toBe('986');
     expect(parsedPix.countryCode).toBe('BR');
