@@ -1,3 +1,10 @@
+# [2.8.0](https://github.com/thalesog/pix-utils/compare/v2.7.1...v2.8.0) (2025-05-28)
+
+
+### Features
+
+* rename composite functionality to recurrence ([#35](https://github.com/thalesog/pix-utils/issues/35)) ([5ebee6a](https://github.com/thalesog/pix-utils/commit/5ebee6aebdf0ec877a6295e73d26c3bff9f6eb06))
+
 ## [2.7.1](https://github.com/thalesog/pix-utils/compare/v2.7.0...v2.7.1) (2025-05-23)
 
 
