@@ -1,5 +1,5 @@
 import { ValueOf } from './helpers';
-import { PixCompositeFn, PixDynamicFn, PixStaticFn } from './pixFunctions';
+import { PixDynamicFn, PixRecurrenceFn, PixStaticFn } from './pixFunctions';
 
 export interface PixEmvMandatoryElements {
   readonly merchantCategoryCode: string; // EL52
@@ -15,20 +15,20 @@ export interface PixEmvBasicElements extends PixEmvMandatoryElements {
 
 export enum PixElementType {
   DYNAMIC = 'DYNAMIC',
-  COMPOSITE = 'COMPOSITE',
   STATIC = 'STATIC',
+  RECURRENCE = 'RECURRENCE',
   INVALID = 'INVALID',
 }
 
 export interface DynamicPixEmvElements extends PixEmvBasicElements {
   readonly type: PixElementType.DYNAMIC;
   readonly url: string;
-  readonly urlRec: undefined;
+  readonly urlRec?: string;
 }
 
-export interface CompositePixEmvElements extends PixEmvBasicElements {
-  readonly type: PixElementType.COMPOSITE;
-  readonly url?: string;
+export interface RecurrencePixEmvElements extends PixEmvBasicElements {
+  readonly type: PixElementType.RECURRENCE;
+  readonly url: undefined;
   readonly urlRec: string;
 }
 
@@ -51,18 +51,18 @@ export type PixElement = {
   [PixElementType.DYNAMIC]: DynamicPixEmvElements;
   [PixElementType.STATIC]: StaticPixEmvElements;
   [PixElementType.INVALID]: InvalidPixEmvElements;
-  [PixElementType.COMPOSITE]: CompositePixEmvElements;
+  [PixElementType.RECURRENCE]: RecurrencePixEmvElements;
 };
 export type PixElements =
   | StaticPixEmvElements
   | DynamicPixEmvElements
-  | CompositePixEmvElements;
+  | RecurrencePixEmvElements;
 
 export type PixObject = {
   [PixElementType.DYNAMIC]: DynamicPixEmvElements;
   [PixElementType.STATIC]: StaticPixEmvElements;
   [PixElementType.INVALID]: InvalidPixEmvElements;
-  [PixElementType.COMPOSITE]: CompositePixEmvElements;
+  [PixElementType.RECURRENCE]: RecurrencePixEmvElements;
 };
 
 export type PixObjects = ValueOf<PixObject>;
@@ -71,4 +71,4 @@ export type PixStaticObject = StaticPixEmvElements & PixStaticFn;
 
 export type PixDynamicObject = DynamicPixEmvElements & PixDynamicFn;
 
-export type PixCompositeObject = CompositePixEmvElements & PixCompositeFn;
+export type PixRecurrenceObject = RecurrencePixEmvElements & PixRecurrenceFn;

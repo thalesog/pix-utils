@@ -1,14 +1,14 @@
 export {
   createDynamicPix,
   createStaticPix,
-  createCompositePix,
+  createRecurrencePix,
 } from './create';
 export { parsePix } from './parser';
 export {
   hasError,
   isStaticPix,
   isDynamicPix,
-  isCompositePix,
+  isRecurrencePix,
 } from './validate';
 export { PixError } from './types/pixError';
 export * from './types/pixElements';

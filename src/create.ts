@@ -1,17 +1,17 @@
 import { generatePixObject } from './assembler';
 import {
-  CreateCompositePixParams,
   CreateDynamicPixParams,
+  CreateRecurrencePixParams,
   CreateStaticPixParams,
 } from './types/pixCreate';
 import {
-  CompositePixEmvElements,
   DynamicPixEmvElements,
-  PixCompositeObject,
+  PixRecurrenceObject,
   PixDynamicObject,
   PixElementType,
   PixStaticObject,
   StaticPixEmvElements,
+  RecurrencePixEmvElements,
 } from './types/pixElements';
 import { PixError } from './types/pixError';
 import { generateErrorObject } from './utils/generateErrorObject';
@@ -66,7 +66,6 @@ export function createDynamicPix(
 
   const elements = {
     type: PixElementType.DYNAMIC,
-    urlRec: undefined,
     ...defaultStaticFields,
     ...params,
   } as DynamicPixEmvElements;
@@ -74,9 +73,9 @@ export function createDynamicPix(
   return generatePixObject(elements) as PixDynamicObject;
 }
 
-export function createCompositePix(
-  params: CreateCompositePixParams
-): PixCompositeObject | PixError {
+export function createRecurrencePix(
+  params: CreateRecurrencePixParams
+): PixRecurrenceObject | PixError {
   if (params.merchantName.length > 25)
     return generateErrorObject('merchantName character limit exceeded (> 25)');
 
@@ -87,10 +86,11 @@ export function createCompositePix(
     return generateErrorObject('merchantCity character limit exceeded (> 15)');
 
   const elements = {
-    type: PixElementType.COMPOSITE,
+    type: PixElementType.RECURRENCE,
     ...defaultStaticFields,
     ...params,
-  } as CompositePixEmvElements;
+    url: undefined,
+  } as RecurrencePixEmvElements;
 
-  return generatePixObject(elements) as PixCompositeObject;
+  return generatePixObject(elements) as PixRecurrenceObject;
 }

@@ -15,13 +15,13 @@ export type CreateDynamicPixParams = {
   merchantName: string;
   merchantCity: string;
   url: string;
+  urlRec?: string;
   oneTime?: boolean;
 };
 
-export type CreateCompositePixParams = {
+export type CreateRecurrencePixParams = {
   merchantName: string;
   merchantCity: string;
   oneTime?: boolean;
-  url?: string;
   urlRec: string;
 };

@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import {
   parsePix,
-  PixCompositeObject,
   PixDynamicObject,
+  PixRecurrenceObject,
   PixStaticObject,
 } from '../src';
 import { parseEmv } from '../src/emvHandler';
@@ -13,13 +13,13 @@ import {
   ValidTags,
 } from '../src/types/pixEmvSchema';
 import {
-  COMPOSITE_DYNAMIC_UNRESERVED_EMV,
+  RECURRENCE_DYNAMIC_UNRESERVED_EMV,
   DYNAMIC_TEST_EMV,
-  COMPOSITE_STATIC_UNRESERVED_EMV,
+  RECURRENCE_STATIC_UNRESERVED_EMV,
   STATIC_TEST_EMV,
   STATIC_TEST_NO_VALUE_ELEMENT_EMV,
   STATIC_TEST_NO_VALUE_EMV,
-  COMPOSITE_DYNAMIC_UNRESERVED_REC,
+  RECURRENCE_DYNAMIC_UNRESERVED_REC,
   STATIC_TEST_WITH_FSS,
 } from './emvCodes';
 
@@ -37,7 +37,7 @@ describe('EMV Parser', () => {
 
   it('should be able to parse additional data from a dynamic emv code', () => {
     const { getTag, getSubTag } = parseEmv({
-      emvCode: COMPOSITE_STATIC_UNRESERVED_EMV,
+      emvCode: RECURRENCE_STATIC_UNRESERVED_EMV,
     }) as ValidTags;
 
     // PARSE UT
@@ -139,7 +139,7 @@ describe('EMV Parser', () => {
   });
 
   it('should be able to parse a pix with additional data', () => {
-    const pix = parsePix(COMPOSITE_STATIC_UNRESERVED_EMV) as PixStaticObject;
+    const pix = parsePix(RECURRENCE_STATIC_UNRESERVED_EMV) as PixStaticObject;
 
     expect(pix.type).toBe('STATIC');
     expect(pix.merchantCategoryCode).toBe('0000');
@@ -155,10 +155,10 @@ describe('EMV Parser', () => {
 
   it('should be able to parse a dynamic pix additional data', () => {
     const pix = parsePix(
-      COMPOSITE_DYNAMIC_UNRESERVED_EMV
-    ) as PixCompositeObject;
+      RECURRENCE_DYNAMIC_UNRESERVED_EMV
+    ) as PixRecurrenceObject;
 
-    expect(pix.type).toBe('COMPOSITE');
+    expect(pix.type).toBe('DYNAMIC');
     expect(pix.merchantCategoryCode).toBe('0000');
     expect(pix.transactionCurrency).toBe('986');
     expect(pix.countryCode).toBe('BR');
@@ -174,10 +174,10 @@ describe('EMV Parser', () => {
 
   it('should be able to parse a pix with rec additional data only', () => {
     const pix = parsePix(
-      COMPOSITE_DYNAMIC_UNRESERVED_REC
-    ) as PixCompositeObject;
+      RECURRENCE_DYNAMIC_UNRESERVED_REC
+    ) as PixRecurrenceObject;
 
-    expect(pix.type).toBe('COMPOSITE');
+    expect(pix.type).toBe('RECURRENCE');
     expect(pix.merchantCategoryCode).toBe('0000');
     expect(pix.transactionCurrency).toBe('986');
     expect(pix.countryCode).toBe('BR');

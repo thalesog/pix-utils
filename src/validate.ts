@@ -1,9 +1,9 @@
 import {
-  PixCompositeObject,
   PixDynamicObject,
   PixElements,
   PixElementType,
   PixObjects,
+  PixRecurrenceObject,
   PixStaticObject,
 } from './types/pixElements';
 import { EmvMaiSchema, EmvSchema, ValidTags } from './types/pixEmvSchema';
@@ -11,7 +11,7 @@ import { PixError } from './types/pixError';
 
 export function isPix(
   emvElements: ValidTags,
-  test: 'pix' | 'valid' | 'static' | 'dynamic' | 'composite'
+  test: 'pix' | 'valid' | 'static' | 'dynamic' | 'recurrence'
 ): boolean {
   if (!emvElements.getTag(EmvSchema.TAG_MAI)) return false;
 
@@ -24,7 +24,7 @@ export function isPix(
     EmvSchema.TAG_MAI
   );
 
-  const isComposite = emvElements.getSubTag(
+  const isRecurrence = emvElements.getSubTag(
     EmvMaiSchema.TAG_MAI_URL,
     EmvSchema.TAG_UNRESERVED_TEMPLATE
   );
@@ -33,13 +33,13 @@ export function isPix(
     case 'pix':
       return true;
     case 'valid':
-      return !!isStatic || !!isDynamic || !!isComposite;
+      return !!isStatic || !!isDynamic || !!isRecurrence;
     case 'static':
       return !!isStatic;
     case 'dynamic':
       return !!isDynamic;
-    case 'composite':
-      return !!isComposite;
+    case 'recurrence':
+      return !!isRecurrence;
     default:
       return false;
   }
@@ -69,8 +69,8 @@ export function isDynamicPix(
   return pixElement && pixElement.type === PixElementType.DYNAMIC;
 }
 
-export function isCompositePix(
+export function isRecurrencePix(
   pixElement: PixObjects
-): pixElement is PixCompositeObject {
-  return pixElement && pixElement.type === PixElementType.COMPOSITE;
+): pixElement is PixRecurrenceObject {
+  return pixElement && pixElement.type === PixElementType.RECURRENCE;
 }
