@@ -145,7 +145,7 @@ export type PIXRecPayload = {
     readonly periodicidade: Periodicidade;
   };
   readonly valor?: {
-    readonly valorRec: string;
+    readonly valorRec?: string;
     readonly valorMinimoRecebedor?: string;
   };
   readonly recebedor: {

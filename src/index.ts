@@ -12,3 +12,4 @@ export {
 } from './validate';
 export { PixError } from './types/pixError';
 export * from './types/pixElements';
+export * from './types/pixDynamicPayload';
