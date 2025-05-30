@@ -1,3 +1,10 @@
+## [2.8.1](https://github.com/thalesog/pix-utils/compare/v2.8.0...v2.8.1) (2025-05-30)
+
+
+### Bug Fixes
+
+* export pixDynamicPayload types and update PIXRecPayload structure ([#36](https://github.com/thalesog/pix-utils/issues/36)) ([8316595](https://github.com/thalesog/pix-utils/commit/8316595182f5aef338a85970766612e09ba3ee18))
+
 # [2.8.0](https://github.com/thalesog/pix-utils/compare/v2.7.1...v2.8.0) (2025-05-28)
 
 
