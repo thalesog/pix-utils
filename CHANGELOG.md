@@ -1,3 +1,10 @@
+## [2.8.2](https://github.com/thalesog/pix-utils/compare/v2.8.1...v2.8.2) (2025-08-15)
+
+
+### Bug Fixes
+
+* make objeto property optional in PIXRecPayload type ([#37](https://github.com/thalesog/pix-utils/issues/37)) ([a3227c1](https://github.com/thalesog/pix-utils/commit/a3227c161f24dcedec79fd0400f39bddd6723296))
+
 ## [2.8.1](https://github.com/thalesog/pix-utils/compare/v2.8.0...v2.8.1) (2025-05-30)
 
 
