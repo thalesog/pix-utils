@@ -135,7 +135,7 @@ export type PIXInstantPayload = {
 export type PIXRecPayload = {
   readonly idRec: string;
   readonly vinculo: {
-    readonly objeto: string;
+    readonly objeto?: string;
     readonly devedor: Devedor;
     readonly contrato: string;
   };
